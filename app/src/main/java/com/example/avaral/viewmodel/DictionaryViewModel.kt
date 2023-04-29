@@ -1,9 +1,9 @@
-package com.example.avarbo.viewmodel
+package com.example.avaral.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.avarbo.database.DictionaryDb
-import com.example.avarbo.model.Word
+import com.example.avaral.database.DictionaryDb
+import com.example.avaral.model.Word
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

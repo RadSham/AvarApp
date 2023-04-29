@@ -1,7 +1,7 @@
-package com.example.avarbo.database
+package com.example.avaral.database
 
 import android.util.Log
-import com.example.avarbo.model.Word
+import com.example.avaral.model.Word
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.sql.Connection
 import java.sql.DriverManager

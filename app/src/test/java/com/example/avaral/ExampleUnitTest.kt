@@ -1,4 +1,4 @@
-package com.example.avarbo
+package com.example.avaral
 
 import org.junit.Test
 

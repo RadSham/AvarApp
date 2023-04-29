@@ -1,4 +1,4 @@
-package com.example.avarbo.model
+package com.example.avaral.model
 
 class Word(
     val id: Int = 0,

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.avarbo'
+    namespace 'com.example.avaral'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.avarbo"
+        applicationId "com.example.avaral"
         minSdk 21
         targetSdk 33
         versionCode 1
