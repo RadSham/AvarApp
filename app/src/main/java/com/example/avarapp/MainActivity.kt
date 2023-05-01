@@ -1,4 +1,4 @@
-package com.example.avaral
+package com.example.avarapp
 
 import android.app.Activity
 import android.content.Intent
@@ -15,9 +15,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.ContextCompat
-import com.example.avaral.R
-import com.example.avaral.activity.DictionaryActivity
-import com.example.avaral.databinding.ActivityMainBinding
+import com.example.avarapp.R
+import com.example.avarapp.activity.DictionaryActivity
+import com.example.avarapp.databinding.ActivityMainBinding
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException

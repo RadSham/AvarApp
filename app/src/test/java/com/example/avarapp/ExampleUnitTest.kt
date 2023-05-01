@@ -1,4 +1,4 @@
-package com.example.avaral
+package com.example.avarapp
 
 import org.junit.Test
 

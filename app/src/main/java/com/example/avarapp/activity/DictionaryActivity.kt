@@ -1,13 +1,13 @@
-package com.example.avaral.activity
+package com.example.avarapp.activity
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.avaral.MainActivity
-import com.example.avaral.R
-import com.example.avaral.databinding.ActivityDictiionaryBinding
-import com.example.avaral.viewmodel.DictionaryViewModel
+import com.example.avarapp.MainActivity
+import com.example.avarapp.R
+import com.example.avarapp.databinding.ActivityDictiionaryBinding
+import com.example.avarapp.viewmodel.DictionaryViewModel
 import kotlinx.coroutines.launch
 
 class DictionaryActivity : AppCompatActivity() {
