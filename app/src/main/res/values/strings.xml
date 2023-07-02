@@ -89,4 +89,11 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 
+    <!-- EditActivity  -->
+    <string name="dialog_avar_language">Авар мацI:</string>
+    <string name="dialog_rus_language">Русский язык:</string>
+    <string name="dialog_en_language">English:</string>
+    <string name="dialog_tr_language">Türkçe:</string>
+    <string name="dictionary_av">Лугъат</string>
+
 </resources>

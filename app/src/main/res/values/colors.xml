@@ -13,4 +13,5 @@
     <color name="grey">#EAEAEA</color>
     <color name="dark_grey">#454749</color>
     <color name="yellow">#FFEB3B</color>
+    <color name="border_gray">#B8B7B7</color>> />
 </resources>
