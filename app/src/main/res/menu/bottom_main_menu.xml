@@ -24,5 +24,4 @@
         android:orderInCategory="100"
         android:title="Home">
     </item>
-
 </menu>

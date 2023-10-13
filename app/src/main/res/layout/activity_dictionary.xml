@@ -20,59 +20,49 @@
         app:title="@string/dictionary_av"
         app:titleTextColor="@color/black" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout_spinner"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/languages_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_dictionary">
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:spinnerMode="dropdown" />
-
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:spinnerMode="dropdown" />
-    </LinearLayout>
-
+        app:layout_constraintTop_toBottomOf="@id/toolbar_dictionary"/>
 
     <LinearLayout
         android:id="@+id/linearLayout_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_spinner">
+        app:layout_constraintTop_toBottomOf="@+id/languages_menu">
 
-        <android.widget.SearchView
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/sv_dictionary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.widget.SearchView>
+            android:layout_height="wrap_content">
+        </androidx.compose.ui.platform.ComposeView>
 
     </LinearLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcView"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/words_lazy_column"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/bNavView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_search">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_search" />
 
-    </androidx.recyclerview.widget.RecyclerView>
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/bNavView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/words_lazy_column"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_main_menu"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <!--<com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bNavView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,7 +72,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_main_menu">
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

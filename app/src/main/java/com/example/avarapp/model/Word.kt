@@ -1,6 +1,6 @@
 package com.example.avarapp.model
 
-class Word(
+data class Word(
     val id: Int = 0,
     val avname: String = "avname",
     val avderivatives: String = "avderivatives",
