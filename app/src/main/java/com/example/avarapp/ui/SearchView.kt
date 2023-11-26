@@ -12,7 +12,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
@@ -27,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.avarapp.R
+import com.example.avarapp.ui.theme.DividerColor
 
 @Composable
 fun SearchView(
@@ -38,7 +38,7 @@ fun SearchView(
         modifier = Modifier
             .border(
                 1.dp,
-                color = MaterialTheme.colors.secondary,
+                color = DividerColor,
                 shape = CircleShape
             )
             .fillMaxWidth()

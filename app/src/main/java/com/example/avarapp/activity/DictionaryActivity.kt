@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -14,16 +13,18 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.example.avarapp.model.Word
+import androidx.lifecycle.ViewModelProvider
+import com.example.avarapp.model.WordEntity
 import com.example.avarapp.ui.BottomNavigationBar
 import com.example.avarapp.ui.LanguageChooser
 import com.example.avarapp.ui.SearchView
 import com.example.avarapp.ui.WordsList
 import com.example.avarapp.ui.theme.AvarAppTheme
 import com.example.avarapp.viewmodel.DictionaryViewModel
+import com.example.avarapp.viewmodel.MyDictionaryViewModelFactory
 
 class DictionaryActivity : ComponentActivity() {
-    private val dictionaryViewModel: DictionaryViewModel by viewModels()
+    private lateinit var dictionaryViewModel: DictionaryViewModel
 
     private lateinit var selectedIndex: MutableState<Int>
 
@@ -31,7 +32,12 @@ class DictionaryActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dictionaryViewModel.loadAllWords(this)
+        val myViewModelFactory = MyDictionaryViewModelFactory()
+
+        dictionaryViewModel = ViewModelProvider(this, myViewModelFactory)[DictionaryViewModel::class.java]
+
+        dictionaryViewModel.loadLocalWords(this)
+
         setContent {
             AvarAppTheme {
                 val expanded = remember { mutableStateOf(false) }
@@ -40,11 +46,14 @@ class DictionaryActivity : ComponentActivity() {
                 val selectedIndex2 = remember { mutableStateOf(1) }
 
                 //wordsLazyColumn
-                val wordsListState: MutableState<List<Word>> = remember { mutableStateOf(listOf()) }
+                val wordsListState: MutableState<List<WordEntity>> =
+                    remember { mutableStateOf(listOf()) }
                 val query = remember { mutableStateOf("") }
 
                 dictionaryViewModel.liveWordsData.observe(this@DictionaryActivity) {
                     wordsListState.value = it
+                    Log.d("MyLog", "wordsListState.value size ${wordsListState.value.size}")
+                    Log.d("MyLog", "it size ${it.size}")
                 }
 
                 Scaffold(topBar = {
@@ -69,7 +78,6 @@ class DictionaryActivity : ComponentActivity() {
             }
         }
     }
-
 
 
     companion object {

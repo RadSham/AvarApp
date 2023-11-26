@@ -13,6 +13,7 @@ object ProgressDialog {
         builder.setView(view)
 
         val dialog = builder.create()
+        println("createProgressDialog")
         dialog.setCancelable(false)
         dialog.show()
         return dialog

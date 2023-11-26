@@ -7,12 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import com.example.avarapp.activity.DictionaryActivity.Companion.myLog
-import com.example.avarapp.model.Word
+import com.example.avarapp.model.WordEntity
 import java.util.Locale
 
 @Composable
 fun WordsList(
-    wordsState: MutableState<List<Word>>,
+    wordsState: MutableState<List<WordEntity>>,
     query: MutableState<String>,
     language: String
 ) {

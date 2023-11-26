@@ -1,23 +1,28 @@
 package com.example.avarapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.avarapp.activity.DictionaryActivity
-import com.example.avarapp.database.DictionaryDbManager
+import com.example.avarapp.model.WordEntity
 import com.example.avarapp.dialog.ProgressDialog
-import com.example.avarapp.model.Word
 
 class DictionaryViewModel : ViewModel() {
-    private val dictionaryDbManager = DictionaryDbManager()
-    val liveWordsData = MutableLiveData<ArrayList<Word>>()
 
-    fun loadAllWords(dictionaryActivity: DictionaryActivity) {
+    private val loadWordsManager = LoadWordsManager()
+    val liveWordsData = MutableLiveData<List<WordEntity>>()
+
+    fun loadLocalWords(dictionaryActivity: DictionaryActivity) {
         val dialog = ProgressDialog.createProgressDialog(dictionaryActivity)
-        dictionaryDbManager.getAllWords(object : DictionaryDbManager.ReadDataCallback {
-            override fun readData(list: ArrayList<Word>) {
-                liveWordsData.value = list
-                dialog.dismiss()
-            }
-        })
+        loadWordsManager.startLoad(
+            dictionaryActivity,
+            object : LoadWordsManager.ReadDataCallback {
+                override fun readData(list: List<WordEntity>) {
+                    liveWordsData.value = list
+                    Log.d("MyLog", "liveWordsData.value ${liveWordsData.value?.size}")
+                    dialog.dismiss()
+                }
+            })
+
     }
 }

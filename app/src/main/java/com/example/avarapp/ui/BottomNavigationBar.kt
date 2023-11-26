@@ -8,17 +8,14 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
-import com.example.avarapp.MainActivity
 import com.example.avarapp.activity.DictionaryActivity
 import com.example.avarapp.model.NavigationItem
 
 @Composable
 fun BottomNavigationBar(context: Activity, selectedItemTitle: String) {
     val items = listOf(
-        NavigationItem.Home,
         NavigationItem.Dictionary,
-        NavigationItem.MyAds,
-        NavigationItem.Events,
+        NavigationItem.Info
     )
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.primary, contentColor = MaterialTheme.colors.onPrimary    ) {
@@ -33,12 +30,7 @@ fun BottomNavigationBar(context: Activity, selectedItemTitle: String) {
                     /* Add code later */
                     if (item.title != selectedItemTitle)
                         when (item.title) {
-                            "Home" -> context.startActivity(
-                                Intent(
-                                    context,
-                                    MainActivity::class.java
-                                )
-                            )
+
 
                             "Dictionary" -> context.startActivity(
                                 Intent(
@@ -46,6 +38,13 @@ fun BottomNavigationBar(context: Activity, selectedItemTitle: String) {
                                     DictionaryActivity::class.java
                                 )
                             )
+
+                            /*"Info" -> context.startActivity(
+                                Intent(
+                                    context,
+                                    MainActivity::class.java
+                                )
+                            )*/
                         }
                 }
             )

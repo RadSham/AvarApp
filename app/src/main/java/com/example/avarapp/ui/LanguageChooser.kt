@@ -33,7 +33,7 @@ fun LanguageChooser(
             Column(
                 modifier = Modifier
                     .border(
-                        width = 2.dp,
+                        width = 1.dp,
                         color = MaterialTheme.colors.secondary,
                         shape = RoundedCornerShape(2.dp)
                     )
@@ -62,7 +62,7 @@ fun LanguageChooser(
             Column(
                 modifier = Modifier
                     .border(
-                        width = 2.dp,
+                        width = 1.dp,
                         color = MaterialTheme.colors.secondary,
                         shape = RoundedCornerShape(2.dp)
                     )
