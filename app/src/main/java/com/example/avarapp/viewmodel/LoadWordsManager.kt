@@ -3,7 +3,7 @@ package com.example.avarapp.viewmodel
 import android.content.Context
 import android.util.Log
 import com.example.avarapp.R
-import com.example.avarapp.activity.DictionaryActivity
+import com.example.avarapp.DictionaryActivity
 import com.example.avarapp.model.WordEntity
 import org.json.JSONArray
 import org.json.JSONException

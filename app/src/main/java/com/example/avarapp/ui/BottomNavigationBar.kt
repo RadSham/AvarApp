@@ -8,7 +8,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
-import com.example.avarapp.activity.DictionaryActivity
+import com.example.avarapp.DictionaryActivity
 import com.example.avarapp.model.NavigationItem
 
 @Composable
@@ -38,7 +38,6 @@ fun BottomNavigationBar(context: Activity, selectedItemTitle: String) {
                                     DictionaryActivity::class.java
                                 )
                             )
-
                             /*"Info" -> context.startActivity(
                                 Intent(
                                     context,

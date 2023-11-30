@@ -10,11 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.avarapp.model.WordEntity
 import com.example.avarapp.ui.theme.DividerColor
+import com.example.avarapp.ui.theme.RedMain
 
 
 @Composable
@@ -91,14 +96,22 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
                         .height(1.dp)
                         .fillMaxWidth()
                 )
-                Text(
-                    text = word.avexample,
-                    color = Color.DarkGray,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(scrollState),
-                    textAlign = TextAlign.Start
+                val customTextSelectionColors = TextSelectionColors(
+                    handleColor = RedMain,
+                    backgroundColor = RedMain.copy(alpha = 0.4f)
                 )
+                CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
+                    SelectionContainer {
+                        Text(
+                            text = word.avexample,
+                            color = Color.DarkGray,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(scrollState),
+                            textAlign = TextAlign.Start
+                        )
+                    }
+                }
             }
         }
     }

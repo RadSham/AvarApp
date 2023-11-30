@@ -17,12 +17,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.avarapp.model.WordEntity
 import com.example.avarapp.ui.theme.DividerColor
+import com.example.avarapp.ui.theme.RedMain
 
 @Composable
 fun WordCard(word: WordEntity) {
@@ -31,7 +34,12 @@ fun WordCard(word: WordEntity) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(2.dp),
+            .padding(2.dp)
+            .shadow(
+                2.dp,
+                ambientColor = RedMain,
+                spotColor = RedMain
+            ),
         shape = RoundedCornerShape(3.dp),
         contentColor = Color.DarkGray
     ) {
@@ -60,9 +68,17 @@ fun WordCard(word: WordEntity) {
                     modifier = Modifier.fillMaxWidth()/*.height(IntrinsicSize.Max)*/,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = word.avname,
-                        fontWeight = FontWeight.Bold)
-                    Text(text = word.rusname)
+                    Text(
+                        text = word.avname,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = word.rusname,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.End
+                    )
                 }
                 Divider(
                     color = DividerColor,
@@ -74,8 +90,16 @@ fun WordCard(word: WordEntity) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = word.enname)
-                    Text(text = word.trname)
+                    Text(
+                        text = word.enname,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = word.trname,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.End
+                    )
                 }
                 Divider(
                     color = DividerColor,
@@ -87,7 +111,7 @@ fun WordCard(word: WordEntity) {
                     Text(
                         text = word.avexample,
                         maxLines = 4,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }
