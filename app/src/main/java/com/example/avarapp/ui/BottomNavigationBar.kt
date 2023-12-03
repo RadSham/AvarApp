@@ -1,50 +1,48 @@
 package com.example.avarapp.ui
 
-import android.app.Activity
-import android.content.Intent
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
-import com.example.avarapp.DictionaryActivity
-import com.example.avarapp.model.NavigationItem
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.avarapp.model.NavItem
 
 @Composable
-fun BottomNavigationBar(context: Activity, selectedItemTitle: String) {
+fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        NavigationItem.Dictionary,
-        NavigationItem.Info
+        NavItem.Dictionary,
+        NavItem.Info
     )
-    BottomNavigation(
-        backgroundColor = MaterialTheme.colors.primary, contentColor = MaterialTheme.colors.onPrimary    ) {
+
+    BottomNavigation {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
             BottomNavigationItem(
-                icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
+                icon = { Icon(painterResource(id = item.icon), contentDescription = item.route) },
                 selectedContentColor = MaterialTheme.colors.secondary,
                 unselectedContentColor = MaterialTheme.colors.onPrimary.copy(0.4f),
                 alwaysShowLabel = false,
-                selected = (selectedItemTitle == item.title),
+                selected = currentRoute == item.route,
                 onClick = {
-                    /* Add code later */
-                    if (item.title != selectedItemTitle)
-                        when (item.title) {
-
-
-                            "Dictionary" -> context.startActivity(
-                                Intent(
-                                    context,
-                                    DictionaryActivity::class.java
-                                )
-                            )
-                            /*"Info" -> context.startActivity(
-                                Intent(
-                                    context,
-                                    MainActivity::class.java
-                                )
-                            )*/
+                    navController.navigate(item.route) {
+                        // Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        // on the back stack as users select items
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
                         }
+                        // Avoid multiple copies of the same destination when re-selecting the same item
+                        launchSingleTop = true
+                        // Restore state when re-selecting a previously selected item
+                        restoreState = true
+                    }
                 }
             )
         }

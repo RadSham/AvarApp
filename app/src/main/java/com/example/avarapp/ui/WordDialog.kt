@@ -47,7 +47,6 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TextWordCardLanguage("Авар мацI")
-//                    TextWordCardWord(word.avname)
                     Text(
                         text = word.avname,
                         color = Color.DarkGray,
@@ -127,7 +126,6 @@ fun TextWordCardWord(word: String) {
     Text(
         text = word,
         color = Color.DarkGray,
-//        fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Right
     )
 }

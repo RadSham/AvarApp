@@ -54,8 +54,6 @@ class LoadWordsManager {
                 )
                 //using dao to insert data to the database
                 tempList.add(wordEntity)
-//                if (tempList.size)
-//                readDataCallback.readData(tempList)
             }
             readDataCallback.readData(tempList)
             Log.d("MyLog", "tempList size ${tempList.size}")
