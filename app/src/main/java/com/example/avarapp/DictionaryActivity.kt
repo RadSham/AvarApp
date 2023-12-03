@@ -5,10 +5,12 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import com.example.avarapp.di.DaggerDictionaryActivityComponent
@@ -28,8 +30,6 @@ class DictionaryActivity : ComponentActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var dictionaryActivityComponent: DictionaryActivityComponent
     private lateinit var selectedIndex: MutableState<Int>
-    private val languages = listOf("Авар мацI", "Русский язык", "English", "Turkce")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,18 +42,29 @@ class DictionaryActivity : ComponentActivity() {
 
         setContent {
             AvarAppTheme {
+                val dialog = remember { mutableStateOf(true) }
+
+                val languages = listOf(
+                    stringResource(id = R.string.avar_lang),
+                    stringResource(id = R.string.rus_lang),
+                    stringResource(id = R.string.eng_lang),
+                    stringResource(id = R.string.tr_lang)
+                )
+
                 val expanded = remember { mutableStateOf(false) }
                 selectedIndex = remember { mutableStateOf(0) }
                 val wordsListState: MutableState<List<WordEntity>> =
                     remember { mutableStateOf(listOf()) }
                 val query = remember { mutableStateOf("") }
 
-                dictionaryViewModel.loadLocalWords(this@DictionaryActivity)
-                dictionaryViewModel.liveWordsData.observe(this@DictionaryActivity) {
-                    wordsListState.value = it
-                    Log.d("MyLog", "wordsListState.value size ${wordsListState.value.size}")
-                    Log.d("MyLog", "it size ${it.size}")
+                LaunchedEffect(key1 = 1) {
+                    println(this)
+                    dictionaryViewModel.loadLocalWords(this@DictionaryActivity, dialog)
+                    dictionaryViewModel.liveWordsData.observe(this@DictionaryActivity) {
+                        wordsListState.value = it
+                    }
                 }
+
                 //StatusBar
                 val systemUiController = rememberSystemUiController()
                 SideEffect {
@@ -68,7 +79,16 @@ class DictionaryActivity : ComponentActivity() {
                     bottomBar = {
                         BottomNavigationBar(navController)
                     }) { padding ->
-                    NavigationSetup(navController = navController, padding, expanded, selectedIndex, languages, query, wordsListState)
+                    NavigationSetup(
+                        navController = navController,
+                        padding,
+                        expanded,
+                        selectedIndex,
+                        languages,
+                        query,
+                        wordsListState,
+                        dialog
+                    )
                 }
             }
         }

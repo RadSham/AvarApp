@@ -21,10 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.avarapp.R
 import com.example.avarapp.model.WordEntity
 import com.example.avarapp.ui.theme.DividerColor
 import com.example.avarapp.ui.theme.RedMain
@@ -46,13 +47,9 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TextWordCardLanguage("Авар мацI")
-                    Text(
-                        text = word.avname,
-                        color = Color.DarkGray,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Right
-                    )
+                    DialogLanguage(stringResource(id = R.string.avar_lang))
+                    DialogWord(word.avname)
+
                 }
                 Divider(
                     color = DividerColor, modifier = Modifier
@@ -63,8 +60,8 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TextWordCardLanguage("Русский язык")
-                    TextWordCardWord(word.rusname)
+                    DialogLanguage(stringResource(id = R.string.rus_lang))
+                    DialogWord(word.rusname)
                 }
                 Divider(
                     color = DividerColor, modifier = Modifier
@@ -75,8 +72,8 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TextWordCardLanguage("English")
-                    TextWordCardWord(word.enname)
+                    DialogLanguage(stringResource(id = R.string.eng_lang))
+                    DialogWord(word.enname)
                 }
                 Divider(
                     color = DividerColor, modifier = Modifier
@@ -87,8 +84,8 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TextWordCardLanguage("Turkce")
-                    TextWordCardWord(word.trname)
+                    DialogLanguage(stringResource(id = R.string.tr_lang))
+                    DialogWord(word.trname)
                 }
                 Divider(
                     color = DividerColor, modifier = Modifier
@@ -117,12 +114,12 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
 }
 
 @Composable
-fun TextWordCardLanguage(language: String) {
+fun DialogLanguage(language: String) {
     Text(text = "$language:", textAlign = TextAlign.Left)
 }
 
 @Composable
-fun TextWordCardWord(word: String) {
+fun DialogWord(word: String) {
     Text(
         text = word,
         color = Color.DarkGray,

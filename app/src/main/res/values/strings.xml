@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AvarApp</string>
+    <string name="avar_lang">Авар мацI</string>
+    <string name="rus_lang">Русский язык</string>
+    <string name="eng_lang">English</string>
+    <string name="tr_lang">Turkce</string>
 </resources>

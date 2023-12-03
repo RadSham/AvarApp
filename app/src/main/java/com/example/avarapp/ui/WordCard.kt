@@ -19,16 +19,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.avarapp.R
 import com.example.avarapp.model.WordEntity
 import com.example.avarapp.ui.theme.DividerColor
 import com.example.avarapp.ui.theme.RedMain
 
 @Composable
-fun WordCard(word: WordEntity) {
+fun WordCard(word: WordEntity, language: String) {
     val openDialog = remember { mutableStateOf(false) }
 
     Card(
@@ -65,17 +67,18 @@ fun WordCard(word: WordEntity) {
                     .padding(3.dp)
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth()/*.height(IntrinsicSize.Max)*/,
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = word.avname,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = if (language == stringResource(id = R.string.avar_lang)) FontWeight.Bold else FontWeight.Normal,
                         textAlign = TextAlign.Start,
                         modifier = Modifier.weight(1f)
                     )
                     Text(
                         text = word.rusname,
+                        fontWeight = if (language == stringResource(id = R.string.rus_lang)) FontWeight.Bold else FontWeight.Normal,
                         modifier = Modifier.weight(1f),
                         textAlign = TextAlign.End
                     )
@@ -92,11 +95,13 @@ fun WordCard(word: WordEntity) {
                 ) {
                     Text(
                         text = word.enname,
+                        fontWeight = if (language == stringResource(id = R.string.eng_lang)) FontWeight.Bold else FontWeight.Normal,
                         textAlign = TextAlign.Start,
                         modifier = Modifier.weight(1f)
                     )
                     Text(
                         text = word.trname,
+                        fontWeight = if (language == stringResource(id = R.string.tr_lang)) FontWeight.Bold else FontWeight.Normal,
                         modifier = Modifier.weight(1f),
                         textAlign = TextAlign.End
                     )

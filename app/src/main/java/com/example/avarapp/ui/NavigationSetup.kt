@@ -18,10 +18,11 @@ fun NavigationSetup(
     languages: List<String>,
     query: MutableState<String>,
     wordsListState: MutableState<List<WordEntity>>,
+    dialog: MutableState<Boolean>,
 ) {
     NavHost(navController, startDestination = NavItem.Dictionary.route) {
         composable(NavItem.Dictionary.route) {
-            DictionaryScreen(padding, expanded, selectedIndex, languages, query, wordsListState)
+            DictionaryScreen(padding, expanded, selectedIndex, languages, query, wordsListState,dialog)
         }
         composable(NavItem.Info.route) {
             InfoScreen()

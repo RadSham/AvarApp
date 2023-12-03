@@ -1,9 +1,9 @@
 package com.example.avarapp.viewmodel
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.example.avarapp.R
-import com.example.avarapp.DictionaryActivity
 import com.example.avarapp.model.WordEntity
 import org.json.JSONArray
 import org.json.JSONException
@@ -13,7 +13,7 @@ import java.io.BufferedReader
 class LoadWordsManager {
 
     fun startLoad(
-        dictionaryActivity: DictionaryActivity,
+        dictionaryActivity: Activity,
         readDataCallback: ReadDataCallback
     ) {
         getAllWords(dictionaryActivity, readDataCallback)
