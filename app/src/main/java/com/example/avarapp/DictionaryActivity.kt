@@ -15,6 +15,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
+import com.example.avarapp.di.DaggerDictionaryActivityComponent
+import com.example.avarapp.di.DictionaryActivityComponent
 import com.example.avarapp.model.WordEntity
 import com.example.avarapp.ui.BottomNavigationBar
 import com.example.avarapp.ui.LanguageChooser
@@ -23,11 +25,15 @@ import com.example.avarapp.ui.WordsList
 import com.example.avarapp.ui.theme.AvarAppTheme
 import com.example.avarapp.ui.theme.RedMain
 import com.example.avarapp.viewmodel.DictionaryViewModel
-import com.example.avarapp.viewmodel.MyDictionaryViewModelFactory
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import javax.inject.Inject
 
 class DictionaryActivity : ComponentActivity() {
-    private lateinit var dictionaryViewModel: DictionaryViewModel
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var dictionaryActivityComponent: DictionaryActivityComponent
 
     private lateinit var selectedIndex: MutableState<Int>
 
@@ -35,16 +41,22 @@ class DictionaryActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val myViewModelFactory = MyDictionaryViewModelFactory()
 
-        dictionaryViewModel =
-            ViewModelProvider(this, myViewModelFactory)[DictionaryViewModel::class.java]
+        val applicationComponent = (application as App).applicationComponent
+        dictionaryActivityComponent =
+            DaggerDictionaryActivityComponent.factory().create(applicationComponent, this)
+
+        dictionaryActivityComponent.inject(this)
+        println(dictionaryActivityComponent.context())
+
+        val dictionaryViewModel =
+            ViewModelProvider(this, viewModelFactory)[DictionaryViewModel::class.java]
+
         setContent {
             AvarAppTheme {
                 val expanded = remember { mutableStateOf(false) }
                 selectedIndex = remember { mutableStateOf(0) }
 
-                //wordsLazyColumn
                 val wordsListState: MutableState<List<WordEntity>> =
                     remember { mutableStateOf(listOf()) }
                 val query = remember { mutableStateOf("") }
@@ -75,7 +87,6 @@ class DictionaryActivity : ComponentActivity() {
                             languages
                         )
                         SearchView(query)
-
                         WordsList(wordsListState, query, languages[selectedIndex.value])
                     }
                 }

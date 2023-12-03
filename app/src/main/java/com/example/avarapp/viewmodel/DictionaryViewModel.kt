@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.avarapp.DictionaryActivity
 import com.example.avarapp.model.WordEntity
+import javax.inject.Inject
 
-class DictionaryViewModel : ViewModel() {
+class DictionaryViewModel @Inject constructor(): ViewModel() {
 
     private val loadWordsManager = LoadWordsManager()
     val liveWordsData = MutableLiveData<List<WordEntity>>()
