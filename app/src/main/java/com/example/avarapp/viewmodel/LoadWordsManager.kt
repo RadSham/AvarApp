@@ -5,41 +5,51 @@ import android.content.Context
 import android.util.Log
 import com.example.avarapp.R
 import com.example.avarapp.model.WordEntity
-import org.json.JSONArray
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import org.json.JSONException
 import java.io.BufferedReader
+import java.lang.reflect.Type
 
 
 class LoadWordsManager {
+    private val tempList = mutableListOf<WordEntity>()
+    private val refreshIntervalMs: Long = 2000
 
     fun startLoad(
-        dictionaryActivity: Activity,
-        readDataCallback: ReadDataCallback
+        dictionaryActivity: Activity
     ) {
-        getAllWords(dictionaryActivity, readDataCallback)
+        getAllWords(dictionaryActivity)
+    }
+
+    fun listenForWordFlow(): Flow<List<WordEntity>> = flow {
+        while (true) {
+            emit(tempList) // Emits the result of the request to the flow
+            delay(refreshIntervalMs) // Suspends the coroutine for some time
+        }
     }
 
     //Filling database with the data from JSON
-    private fun getAllWords(context: Context, readDataCallback: ReadDataCallback) {
-        val tempList = mutableListOf<WordEntity>()
-
+    private fun getAllWords(context: Context) {
         // using try catch to load the necessary data
         try {
             //creating variable that holds the loaded data
-            val words = loadJSONArray(context)
+            val words = loadListOfWordEntities(context)
             //looping through the variable as specified fields are loaded with data
-            for (i in 0 until words.length()) {
+            for (i in words) {
                 //variable to obtain the JSON object
-                val item = words.getJSONObject(i)
                 //Using the JSON object to assign data
-                val wordId = item.getInt("id")
-                val wordAvname = item.getString("avname")
-                val wordAvderivatives = item.getString("avderivatives")
-                val wordAvcat = item.getString("avcat")
-                val wordRusname = item.getString("rusname")
-                val wordTrname = item.getString("trname")
-                val wordEnname = item.getString("enname")
-                val wordAvexample = item.getString("avexample")
+                val wordId = i.id
+                val wordAvname = i.avname
+                val wordAvderivatives = i.avderivatives
+                val wordAvcat = i.avcat
+                val wordRusname = i.rusname
+                val wordTrname = i.trname
+                val wordEnname = i.enname
+                val wordAvexample = i.avexample
 
                 //data loaded to the entity
                 val wordEntity = WordEntity(
@@ -54,24 +64,27 @@ class LoadWordsManager {
                 )
                 //using dao to insert data to the database
                 tempList.add(wordEntity)
+
             }
-            readDataCallback.readData(tempList)
+//            readDataCallback.readData(tempList)
             Log.d("MyLog", "tempList size ${tempList.size}")
         }
         //error when exception occurs
         catch (e: JSONException) {
             Log.d("MyLog", "fillWithStartingWords: $e")
         }
+
     }
 
     // loads JSON data
-    private fun loadJSONArray(context: Context): JSONArray {
+    private fun loadListOfWordEntities(context: Context): List<WordEntity> {
         //obtain input byte
         val inputStream = context.resources.openRawResource(R.raw.words)
         //using Buffered reader to read the inputstream byte
-        BufferedReader(inputStream.reader()).use {
-            return JSONArray(it.readText())
-        }
+        val br = BufferedReader(inputStream.reader())
+        val type: Type = object : TypeToken<List<WordEntity?>?>() {}.type
+        return GsonBuilder().create().fromJson(br, type)
+
     }
 
     interface ReadDataCallback {

@@ -19,13 +19,12 @@ fun DictionaryScreen(
     dialog: MutableState<Boolean>
 ) {
     Column(modifier = Modifier.padding(padding)) {
-        ProcessBar(dialog = dialog)
         LanguageChooser(
             expanded,
             selectedIndex,
             languages
         )
         SearchView(query)
-        WordsList(wordsListState, query, languages[selectedIndex.value],dialog)
+        WordsList(wordsListState, query, languages[selectedIndex.value], dialog)
     }
 }

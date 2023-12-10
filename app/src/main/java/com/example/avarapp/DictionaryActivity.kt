@@ -21,6 +21,7 @@ import com.example.avarapp.ui.NavigationSetup
 import com.example.avarapp.ui.theme.AvarAppTheme
 import com.example.avarapp.ui.theme.RedMain
 import com.example.avarapp.viewmodel.DictionaryViewModel
+import com.example.avarapp.viewmodel.Result
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import javax.inject.Inject
 
@@ -58,10 +59,17 @@ class DictionaryActivity : ComponentActivity() {
                 val query = remember { mutableStateOf("") }
 
                 LaunchedEffect(key1 = 1) {
-                    println(this)
-                    dictionaryViewModel.loadLocalWords(this@DictionaryActivity, dialog)
-                    dictionaryViewModel.liveWordsData.observe(this@DictionaryActivity) {
-                        wordsListState.value = it
+                    dictionaryViewModel.loadLocalWords(this@DictionaryActivity)
+                    dictionaryViewModel.wStateFlow.collect {
+                        when (it) {
+                            is Result.Success -> {
+                                wordsListState.value = it.value
+                                dialog.value = false
+                                myLog(wordsListState.value.size)
+                            }
+                            is Result.Loading -> myLog(it)
+                            is Result.Error -> myLog(it)
+                        }
                     }
                 }
 

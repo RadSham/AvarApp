@@ -16,35 +16,22 @@ import com.example.avarapp.ui.theme.RedMain
 
 @Composable
 fun ProcessBar(dialog: MutableState<Boolean>) {
-    println("ProcessBar Dialog ${dialog.value}")
     if (!dialog.value) return
     Column(
-        // we are using column to align our
-        // imageview to center of the screen.
+        // we are using column to align our imageview to center of the screen.
         modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-
-        // below line is used for specifying
-        // vertical arrangement.
+        // below line is used for specifying vertical arrangement.
         verticalArrangement = Arrangement.Center,
-
-        // below line is used for specifying
-        // horizontal arrangement.
-        horizontalAlignment = Alignment.CenterHorizontally,
-
+        // below line is used for specifying horizontal arrangement.
+        horizontalAlignment = Alignment.CenterHorizontally
         ) {
-        // below line is use to display
-        // a circular progress bar.
+        // below line is use to display a circular progress bar.
         CircularProgressIndicator(
-            // below line is use to add padding
-            // to our progress bar.
+            // below line is use to add padding to our progress bar.
             modifier = Modifier.padding(16.dp),
-
-            // below line is use to add color
-            // to our progress bar.
+            // below line is use to add color to our progress bar.
             color = RedMain,
-
-            // below line is use to add stroke
-            // width to our progress bar.
+            // below line is use to add stroke width to our progress bar.
             strokeWidth = Dp(value = 4F)
         )
     }
