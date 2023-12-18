@@ -12,13 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,8 +26,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.avarapp.R
 import com.example.avarapp.model.WordEntity
-import com.example.avarapp.ui.theme.DividerColor
-import com.example.avarapp.ui.theme.RedMain
 
 @Composable
 fun WordCard(word: WordEntity, language: String) {
@@ -39,11 +37,11 @@ fun WordCard(word: WordEntity, language: String) {
             .padding(2.dp)
             .shadow(
                 2.dp,
-                ambientColor = RedMain,
-                spotColor = RedMain
+                ambientColor = MaterialTheme.colors.secondary,
+                spotColor = MaterialTheme.colors.secondary
             ),
         shape = RoundedCornerShape(3.dp),
-        contentColor = Color.DarkGray
+        contentColor = MaterialTheme.colors.primaryVariant
     ) {
         Box(modifier = Modifier.clickable(
             onClick = {
@@ -61,7 +59,7 @@ fun WordCard(word: WordEntity, language: String) {
                 modifier = Modifier
                     .border(
                         width = 1.dp,
-                        color = DividerColor,
+                        color = MaterialTheme.colors.secondaryVariant,
                         shape = RoundedCornerShape(2.dp)
                     )
                     .padding(3.dp)
@@ -84,7 +82,7 @@ fun WordCard(word: WordEntity, language: String) {
                     )
                 }
                 Divider(
-                    color = DividerColor,
+                    color = MaterialTheme.colors.secondaryVariant,
                     modifier = Modifier
                         .height(1.dp)
                         .fillMaxWidth()
@@ -107,7 +105,7 @@ fun WordCard(word: WordEntity, language: String) {
                     )
                 }
                 Divider(
-                    color = DividerColor,
+                    color = MaterialTheme.colors.secondaryVariant,
                     modifier = Modifier
                         .height(1.dp)
                         .fillMaxWidth()

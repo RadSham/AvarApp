@@ -12,13 +12,19 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun InfoScreen() {
-    Box(modifier = Modifier.fillMaxSize()
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = infoText(), modifier = Modifier.align(Alignment.Center).padding(10.dp),
-            textAlign = TextAlign.Center)
+        Text(
+            text = infoText(),
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(10.dp),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
-fun infoText(): String{
+fun infoText(): String {
     return "Салам алайкум. \nЭто оффлайн словарь аварского, русского, турецкого и английских языков"
 }

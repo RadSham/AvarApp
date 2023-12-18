@@ -6,17 +6,17 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.avarapp.ui.theme.RedMain
 
 @Composable
-fun ProcessBar(dialog: MutableState<Boolean>) {
-    if (!dialog.value) return
+fun ProcessBar(progressBarLoading: MutableState<Boolean>) {
+    if (!progressBarLoading.value) return
     Column(
         // we are using column to align our imageview to center of the screen.
         modifier = Modifier.fillMaxWidth().fillMaxHeight(),
@@ -30,7 +30,7 @@ fun ProcessBar(dialog: MutableState<Boolean>) {
             // below line is use to add padding to our progress bar.
             modifier = Modifier.padding(16.dp),
             // below line is use to add color to our progress bar.
-            color = RedMain,
+            color = MaterialTheme.colors.secondary,
             // below line is use to add stroke width to our progress bar.
             strokeWidth = Dp(value = 4F)
         )

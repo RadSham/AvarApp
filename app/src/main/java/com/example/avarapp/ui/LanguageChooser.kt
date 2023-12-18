@@ -10,6 +10,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.TextStyle
@@ -19,10 +21,10 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LanguageChooser(
-    expanded: MutableState<Boolean>,
     selectedIndex: MutableState<Int>,
     items: List<String>
 ) {
+    val expanded = remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(
         expanded = expanded.value,
         onExpandedChange = { expanded.value = !expanded.value },

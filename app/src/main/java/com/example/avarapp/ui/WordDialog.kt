@@ -16,19 +16,17 @@ import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.avarapp.R
 import com.example.avarapp.model.WordEntity
-import com.example.avarapp.ui.theme.DividerColor
-import com.example.avarapp.ui.theme.RedMain
 
 
 @Composable
@@ -52,7 +50,7 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
 
                 }
                 Divider(
-                    color = DividerColor, modifier = Modifier
+                    color = MaterialTheme.colors.secondaryVariant, modifier = Modifier
                         .height(1.dp)
                         .fillMaxWidth()
                 )
@@ -64,7 +62,7 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
                     DialogWord(word.rusname)
                 }
                 Divider(
-                    color = DividerColor, modifier = Modifier
+                    color = MaterialTheme.colors.secondaryVariant, modifier = Modifier
                         .height(1.dp)
                         .fillMaxWidth()
                 )
@@ -76,7 +74,7 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
                     DialogWord(word.enname)
                 }
                 Divider(
-                    color = DividerColor, modifier = Modifier
+                    color = MaterialTheme.colors.secondaryVariant, modifier = Modifier
                         .height(1.dp)
                         .fillMaxWidth()
                 )
@@ -88,19 +86,19 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
                     DialogWord(word.trname)
                 }
                 Divider(
-                    color = DividerColor, modifier = Modifier
+                    color = MaterialTheme.colors.secondaryVariant, modifier = Modifier
                         .height(1.dp)
                         .fillMaxWidth()
                 )
                 val customTextSelectionColors = TextSelectionColors(
-                    handleColor = RedMain,
-                    backgroundColor = RedMain.copy(alpha = 0.4f)
+                    handleColor = MaterialTheme.colors.secondary,
+                    backgroundColor = MaterialTheme.colors.secondary.copy(alpha = 0.4f)
                 )
                 CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
                     SelectionContainer {
                         Text(
                             text = word.avexample,
-                            color = Color.DarkGray,
+                            color = MaterialTheme.colors.primaryVariant,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .verticalScroll(scrollState),
@@ -122,7 +120,7 @@ fun DialogLanguage(language: String) {
 fun DialogWord(word: String) {
     Text(
         text = word,
-        color = Color.DarkGray,
+        color = MaterialTheme.colors.primaryVariant,
         textAlign = TextAlign.Right
     )
 }
