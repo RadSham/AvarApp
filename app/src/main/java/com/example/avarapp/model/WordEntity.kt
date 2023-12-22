@@ -8,5 +8,6 @@ data class WordEntity(
     val rusname: String = "rusname",
     val trname: String = "trname",
     val enname: String = "enname",
-    val avexample: String = "avexample"
+    val avexample: String = "avexample",
+    val rusexample: String = "rusexample"
 )

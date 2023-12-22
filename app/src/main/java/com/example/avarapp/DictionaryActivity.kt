@@ -23,7 +23,6 @@ import com.example.avarapp.ui.theme.RedMain
 import com.example.avarapp.viewmodel.DictionaryViewModel
 import com.example.avarapp.viewmodel.Result
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import kotlinx.coroutines.cancel
 import javax.inject.Inject
 
 class DictionaryActivity : ComponentActivity() {
@@ -31,7 +30,6 @@ class DictionaryActivity : ComponentActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var dictionaryActivityComponent: DictionaryActivityComponent
-    private lateinit var selectedIndex: MutableState<Int>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,8 +43,6 @@ class DictionaryActivity : ComponentActivity() {
         setContent {
             AvarAppTheme {
                 val progressBarLoading = remember { mutableStateOf(true) }
-
-                selectedIndex = remember { mutableStateOf(0) }
                 val wordsListState: MutableState<List<WordEntity>> =
                     remember { mutableStateOf(listOf()) }
                 LaunchedEffect(key1 = 1) {
@@ -56,7 +52,8 @@ class DictionaryActivity : ComponentActivity() {
                             is Result.Success -> {
                                 wordsListState.value = it.value
                                 progressBarLoading.value = false
-                                this.cancel()
+                                myLog("wordsListState.value.size " + wordsListState.value.size)
+//                                this.cancel()
                             }
                             is Result.Loading -> progressBarLoading.value = true
                             is Result.Error -> myLog(it)

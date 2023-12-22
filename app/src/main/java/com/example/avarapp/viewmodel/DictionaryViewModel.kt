@@ -22,9 +22,11 @@ class DictionaryViewModel @Inject constructor() : ViewModel() {
         dictionaryActivity: Activity
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            loadWordsManager.startLoad(
-                dictionaryActivity
-            )
+            launch  {
+                loadWordsManager.startLoad(
+                    dictionaryActivity
+                )
+            }.join()
 
             loadWordsManager.listenForWordFlow()
                 .catch { _wStateFlow.value = Result.Error(it) }

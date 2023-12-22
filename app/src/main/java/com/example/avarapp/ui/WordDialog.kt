@@ -96,14 +96,23 @@ fun WordDialog(word: WordEntity, onDismissRequest: () -> Unit) {
                 )
                 CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
                     SelectionContainer {
-                        Text(
-                            text = word.avexample,
-                            color = MaterialTheme.colors.primaryVariant,
+                        Column(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .verticalScroll(scrollState),
-                            textAlign = TextAlign.Start
-                        )
+                                .verticalScroll(scrollState)
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(bottom = 15.dp),
+                                text = word.avexample,
+                                color = MaterialTheme.colors.primaryVariant,
+                                textAlign = TextAlign.Start
+                            )
+                            Text(
+                                text = word.rusexample,
+                                color = MaterialTheme.colors.primaryVariant,
+                                textAlign = TextAlign.Start
+                            )
+                        }
                     }
                 }
             }

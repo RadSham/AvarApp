@@ -18,54 +18,51 @@ fun WordsList(
 ) {
     myLog("WordsList compose creating")
     val filteredList =
-        if (query.value.isEmpty()) {
-            wordsListState.value.shuffled()
-        } else {
-            wordsListState.value.filter {
-                when (language) {
-                    "Авар мацI" -> it.avname.lowercase(Locale.getDefault()).contains(
+        wordsListState.value.filter {
+            when (language) {
+                "Авар мацI" -> it.avname.lowercase(Locale.getDefault()).contains(
+                    query.value.lowercase(Locale.getDefault())
+                )
+
+                "Русский язык" -> it.rusname.lowercase(Locale.getDefault()).contains(
+                    query.value.lowercase(Locale.getDefault())
+                )
+
+                "English" -> it.enname.lowercase(Locale.getDefault()).contains(
+                    query.value.lowercase(Locale.getDefault())
+                )
+
+                "Turkce" -> it.trname.lowercase(Locale.getDefault()).contains(
+                    query.value.lowercase(Locale.getDefault())
+                )
+
+                else -> {
+                    it.avname.lowercase(Locale.getDefault()).contains(
                         query.value.lowercase(Locale.getDefault())
                     )
-
-                    "Русский язык" -> it.rusname.lowercase(Locale.getDefault()).contains(
-                        query.value.lowercase(Locale.getDefault())
-                    )
-
-                    "English" -> it.enname.lowercase(Locale.getDefault()).contains(
-                        query.value.lowercase(Locale.getDefault())
-                    )
-
-                    "Turkce" -> it.trname.lowercase(Locale.getDefault()).contains(
-                        query.value.lowercase(Locale.getDefault())
-                    )
-
-                    else -> {
-                        it.avname.lowercase(Locale.getDefault()).contains(
-                            query.value.lowercase(Locale.getDefault())
-                        )
-                    }
                 }
-            }.partition {
-                when (language) {
-                    "Авар мацI" -> it.avname.lowercase(Locale.getDefault())
-                        .startsWith(query.value, ignoreCase = true)
+            }
+        }.partition {
+            when (language) {
+                "Авар мацI" -> it.avname.lowercase(Locale.getDefault())
+                    .startsWith(query.value, ignoreCase = true)
 
-                    "Русский язык" -> it.rusname.lowercase(Locale.getDefault())
-                        .startsWith(query.value, ignoreCase = true)
+                "Русский язык" -> it.rusname.lowercase(Locale.getDefault())
+                    .startsWith(query.value, ignoreCase = true)
 
-                    "English" -> it.enname.lowercase(Locale.getDefault())
-                        .startsWith(query.value, ignoreCase = true)
+                "English" -> it.enname.lowercase(Locale.getDefault())
+                    .startsWith(query.value, ignoreCase = true)
 
-                    "Turkce" -> it.trname.lowercase(Locale.getDefault())
-                        .startsWith(query.value, ignoreCase = true)
+                "Turkce" -> it.trname.lowercase(Locale.getDefault())
+                    .startsWith(query.value, ignoreCase = true)
 
-                    else -> {
-                        it.avname.lowercase(Locale.getDefault())
-                            .startsWith(query.value, ignoreCase = true)
-                    }
+                else -> {
+                    it.avname.lowercase(Locale.getDefault())
+                        .startsWith(query.value, ignoreCase = true)
                 }
-            }.run { first + second }
-        }
+            }
+        }.run { first + second }
+
 
     LazyColumn(Modifier.fillMaxSize()) {
         itemsIndexed(filteredList) { _, word ->
