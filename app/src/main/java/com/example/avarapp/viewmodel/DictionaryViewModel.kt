@@ -14,25 +14,15 @@ import javax.inject.Inject
 class DictionaryViewModel @Inject constructor() : ViewModel() {
 
     private val loadWordsManager = LoadWordsManager()
-
     private val _wStateFlow = MutableStateFlow<Result<List<WordEntity>>>(Result.Loading())
     val wStateFlow = _wStateFlow.asStateFlow()
 
-    fun loadLocalWords(
-        dictionaryActivity: Activity
-    ) {
+    fun loadLocalWords(dictionaryActivity: Activity) {
         viewModelScope.launch(Dispatchers.IO) {
-            launch  {
-                loadWordsManager.startLoad(
-                    dictionaryActivity
-                )
-            }.join()
-
+            launch {  loadWordsManager.getAllWords(dictionaryActivity) }.join()
             loadWordsManager.listenForWordFlow()
                 .catch { _wStateFlow.value = Result.Error(it) }
-                .collect {
-                    _wStateFlow.emit(Result.Success(it))
-                }
+                .collect { _wStateFlow.emit(Result.Success(it)) }
         }
     }
 }

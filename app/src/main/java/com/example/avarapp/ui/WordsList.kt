@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import com.example.avarapp.DictionaryActivity.Companion.myLog
 import com.example.avarapp.model.WordEntity
 import java.util.Locale
 
@@ -16,7 +15,6 @@ fun WordsList(
     wordsListState: MutableState<List<WordEntity>>,
     language: String,
 ) {
-    myLog("WordsList compose creating")
     val filteredList =
         wordsListState.value.filter {
             when (language) {

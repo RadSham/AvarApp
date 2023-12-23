@@ -52,10 +52,9 @@ class DictionaryActivity : ComponentActivity() {
                             is Result.Success -> {
                                 wordsListState.value = it.value
                                 progressBarLoading.value = false
-//                                myLog("wordsListState.value.size " + wordsListState.value.size)
                             }
                             is Result.Loading -> progressBarLoading.value = true
-                            is Result.Error -> myLog(it)
+                            is Result.Error -> Log.d("MyLog", it.toString())
                         }
                     }
                 }
@@ -78,12 +77,6 @@ class DictionaryActivity : ComponentActivity() {
                     )
                 }
             }
-        }
-    }
-
-    companion object {
-        fun myLog(message: Any) {
-            Log.d("MyLog", message.toString())
         }
     }
 }

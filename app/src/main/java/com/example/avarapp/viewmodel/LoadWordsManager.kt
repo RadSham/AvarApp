@@ -1,6 +1,5 @@
 package com.example.avarapp.viewmodel
 
-import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.example.avarapp.R
@@ -15,16 +14,9 @@ import java.lang.reflect.Type
 
 class LoadWordsManager {
     private var tempList = mutableListOf<WordEntity>()
-    private val refreshIntervalMs: Long = 2000
-
-    fun startLoad(
-        dictionaryActivity: Activity
-    ) {
-        getAllWords(dictionaryActivity)
-    }
 
     //Filling list with the data from JSON
-    private fun getAllWords(context: Context) {
+    fun getAllWords(context: Context) {
         var br: BufferedReader? = null
         // using try catch to load the necessary data
         try {
@@ -34,9 +26,7 @@ class LoadWordsManager {
             br = BufferedReader(inputStream.reader())
             //create type of List<WordEntity>
             val type: Type = object : TypeToken<List<WordEntity?>?>() {}.type
-//            myLog("before gson reading")
-            tempList = GsonBuilder().create().fromJson(br, type)
-//            myLog("after gson reading")
+            tempList.addAll(GsonBuilder().create().fromJson(br, type))
         }
         //error when exception occurs
         catch (e: Exception) {
@@ -48,6 +38,5 @@ class LoadWordsManager {
 
     fun listenForWordFlow(): Flow<List<WordEntity>> = flow {
         emit(tempList) // Emits the result of the request to the flow
-//        delay(refreshIntervalMs) // Suspends the coroutine for some time
     }
 }
