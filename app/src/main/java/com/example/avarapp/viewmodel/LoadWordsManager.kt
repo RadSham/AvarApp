@@ -3,12 +3,10 @@ package com.example.avarapp.viewmodel
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import com.example.avarapp.DictionaryActivity.Companion.myLog
 import com.example.avarapp.R
 import com.example.avarapp.model.WordEntity
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.BufferedReader
@@ -36,9 +34,9 @@ class LoadWordsManager {
             br = BufferedReader(inputStream.reader())
             //create type of List<WordEntity>
             val type: Type = object : TypeToken<List<WordEntity?>?>() {}.type
-            myLog("before gson reading")
+//            myLog("before gson reading")
             tempList = GsonBuilder().create().fromJson(br, type)
-            myLog("after gson reading")
+//            myLog("after gson reading")
         }
         //error when exception occurs
         catch (e: Exception) {

@@ -52,8 +52,7 @@ class DictionaryActivity : ComponentActivity() {
                             is Result.Success -> {
                                 wordsListState.value = it.value
                                 progressBarLoading.value = false
-                                myLog("wordsListState.value.size " + wordsListState.value.size)
-//                                this.cancel()
+//                                myLog("wordsListState.value.size " + wordsListState.value.size)
                             }
                             is Result.Loading -> progressBarLoading.value = true
                             is Result.Error -> myLog(it)
