@@ -15,10 +15,12 @@ fun WordsList(
     wordsListState: MutableState<List<WordEntity>>,
     language: String,
 ) {
+//    i1l!|Ӏӏ
+    query.value = query.value.replace("[i1l!|Ӏӏ]".toRegex(),"I")
     val filteredList =
         wordsListState.value.filter {
             when (language) {
-                "Авар мацI" -> it.avname.lowercase(Locale.getDefault()).contains(
+                "Авар мацI" -> it.avderivatives.lowercase(Locale.getDefault()).contains(
                     query.value.lowercase(Locale.getDefault())
                 )
 
