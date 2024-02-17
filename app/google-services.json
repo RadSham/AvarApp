@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:102462594511:android:1812a991428ebc0c2186ba",
         "android_client_info": {
-          "package_name": "com.example.avarapp"
+          "package_name": "my.exam.avarapp"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "102462594511-96iise37r1rmtg3upn1enj04lnv7d409.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.avarapp",
+            "package_name": "my.exam.avarapp",
             "certificate_hash": "6350cfdd53ac8e1557fef1b2fb4bf13630b0a0d8"
           }
         },
