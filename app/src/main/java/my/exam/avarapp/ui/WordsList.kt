@@ -15,40 +15,33 @@ fun WordsList(
     wordsListState: MutableState<List<WordEntity>>,
     language: String,
 ) {
+    query.value = query.value.replace("[1!|Ӏӏ]".toRegex(), "I")
     val filteredList =
         wordsListState.value.filter {
             when (language) {
-                "Авар мацI" -> {
-                    query.value = query.value.replace("[i1l!|Ӏӏ]".toRegex(), "I")
+                "Авар мацI" ->
                     it.avderivatives.lowercase(Locale.getDefault())
-                        .contains(query.value.lowercase(Locale.getDefault()))
-                }
+                        .contains(query.value, ignoreCase = true)
 
-                "Русский язык" -> it.rusname.lowercase(Locale.getDefault()).contains(
-                    query.value.lowercase(Locale.getDefault())
-                )
+                "Русский язык" -> it.rusname.lowercase(Locale.getDefault())
+                    .contains(query.value, ignoreCase = true)
 
-                "English" -> it.enname.lowercase(Locale.getDefault()).contains(
-                    query.value.lowercase(Locale.getDefault())
-                )
+                "English" -> it.enname.lowercase(Locale.getDefault())
+                    .contains(query.value, ignoreCase = true)
 
-                "Turkce" -> it.trname.lowercase(Locale.getDefault()).contains(
-                    query.value.lowercase(Locale.getDefault())
-                )
+                "Turkce" -> it.trname.lowercase(Locale.getDefault())
+                    .contains(query.value, ignoreCase = true)
 
                 else -> {
-                    it.avname.lowercase(Locale.getDefault()).contains(
-                        query.value.lowercase(Locale.getDefault())
-                    )
+                    it.avname.lowercase(Locale.getDefault())
+                        .contains(query.value, ignoreCase = true)
                 }
             }
         }.partition {
             when (language) {
-                "Авар мацI" -> {
-                    query.value = query.value.replace("[i1l!|Ӏӏ]".toRegex(), "I")
+                "Авар мацI" ->
                     it.avname.lowercase(Locale.getDefault())
                         .startsWith(query.value, ignoreCase = true)
-                }
 
                 "Русский язык" -> it.rusname.lowercase(Locale.getDefault())
                     .startsWith(query.value, ignoreCase = true)
