@@ -23,7 +23,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -40,6 +39,7 @@ fun SearchView(
     val focusManager = LocalFocusManager.current
     Box(
         modifier = Modifier
+            .height(48.dp)
             .border(
                 1.dp, color = MaterialTheme.colors.secondaryVariant, shape = CircleShape
             )
@@ -91,7 +91,7 @@ fun SearchView(
                                     Icon(
                                         imageVector = Icons.Default.Close,
                                         contentDescription = "Clear Icon",
-                                        tint = Color.Black //Or desired color
+                                        tint = MaterialTheme.colors.primaryVariant //Or desired color
                                     )
                                 }
                             }
