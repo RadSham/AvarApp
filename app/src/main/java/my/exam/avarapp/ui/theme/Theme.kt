@@ -6,7 +6,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.DarkGray
+import androidx.compose.ui.graphics.Color.Companion.Gray
 
 private val DarkColorPalette = darkColors(
     primary = Black,
@@ -18,9 +18,9 @@ private val DarkColorPalette = darkColors(
 
 private val LightColorPalette = lightColors(
     primary = White,
-    onPrimary = Gray,
+    onPrimary = Black,
     secondary = RedMain,
-    primaryVariant = DarkGray,
+    primaryVariant = Gray,
     secondaryVariant = DividerColor
 
 

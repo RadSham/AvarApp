@@ -23,6 +23,8 @@ import my.exam.avarapp.ui.theme.RedMain
 import my.exam.avarapp.viewmodel.DictionaryViewModel
 import my.exam.avarapp.viewmodel.Result
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import my.exam.avarapp.model.CategoryPhraseEntity
+import my.exam.avarapp.model.TutorialEntity
 import javax.inject.Inject
 
 class DictionaryActivity : ComponentActivity() {
@@ -45,6 +47,10 @@ class DictionaryActivity : ComponentActivity() {
                 val progressBarLoading = remember { mutableStateOf(true) }
                 val wordsListState: MutableState<List<WordEntity>> =
                     remember { mutableStateOf(listOf()) }
+                val phrasesListState: MutableState<List<CategoryPhraseEntity>> =
+                    remember { mutableStateOf(listOf()) }
+                val tutorialListState: MutableState<List<TutorialEntity>> =
+                    remember { mutableStateOf(listOf()) }
                 LaunchedEffect(key1 = 1) {
                     dictionaryViewModel.loadLocalWords(this@DictionaryActivity)
                     dictionaryViewModel.wStateFlow.collect {
@@ -59,6 +65,36 @@ class DictionaryActivity : ComponentActivity() {
                     }
                 }
 
+                LaunchedEffect(key1 = 2){
+                    dictionaryViewModel.loadLocalPhrases(this@DictionaryActivity)
+                    dictionaryViewModel.pStateFlow.collect {
+                        when (it) {
+                            is Result.Success -> {
+                                phrasesListState.value = it.value
+                                Log.d("MyLog", "size ${phrasesListState.value}")
+//                                progressBarLoading.value = false
+                            }
+                            is Result.Loading -> Log.d("MyLog", it.toString()) //progressBarLoading.value = true
+                            is Result.Error -> Log.d("MyLog", it.toString())
+                        }
+                    }
+                }
+
+                LaunchedEffect(key1 = 3){
+                    dictionaryViewModel.loadLocalTutorial(this@DictionaryActivity)
+                    dictionaryViewModel.tStateFlow.collect {
+                        when (it) {
+                            is Result.Success -> {
+                                tutorialListState.value = it.value
+                                Log.d("MyLog", "size ${tutorialListState.value}")
+//                                progressBarLoading.value = false
+                            }
+                            is Result.Loading -> Log.d("MyLog", it.toString()) //progressBarLoading.value = true
+                            is Result.Error -> Log.d("MyLog", it.toString())
+                        }
+                    }
+                }
+
                 //StatusBar
                 val systemUiController = rememberSystemUiController()
                 SideEffect {
@@ -68,12 +104,13 @@ class DictionaryActivity : ComponentActivity() {
                 }
                 //Navigation and Screens
                 val navController = rememberNavController()
-                Scaffold(bottomBar = {
+                Scaffold(
+                    bottomBar = {
                     BottomNavigationBar(navController)
                 }) { padding ->
                     ProcessBar(progressBarLoading)
                     NavigationSetup(
-                        navController = navController, padding, wordsListState
+                        navController = navController, padding, wordsListState, phrasesListState, tutorialListState
                     )
                 }
             }

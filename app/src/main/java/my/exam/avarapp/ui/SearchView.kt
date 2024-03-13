@@ -63,7 +63,8 @@ fun SearchView(
                         .height(38.dp)
                         .fillMaxWidth(),
                     textStyle = TextStyle(
-                        color = MaterialTheme.colors.primaryVariant, fontSize = 18.sp
+                        fontSize = 18.sp,
+                        color = MaterialTheme.colors.onPrimary
                     ),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -91,7 +92,7 @@ fun SearchView(
                                     Icon(
                                         imageVector = Icons.Default.Close,
                                         contentDescription = "Clear Icon",
-                                        tint = MaterialTheme.colors.primaryVariant //Or desired color
+//                                        tint = MaterialTheme.colors.primaryVariant //Or desired color
                                     )
                                 }
                             }

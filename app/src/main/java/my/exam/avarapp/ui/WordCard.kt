@@ -29,7 +29,7 @@ import my.exam.avarapp.model.WordEntity
 
 @Composable
 fun WordCard(word: WordEntity, language: String) {
-    val openDialog = remember { mutableStateOf(false) }
+    val openWordDialog = remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
@@ -41,17 +41,16 @@ fun WordCard(word: WordEntity, language: String) {
                 spotColor = MaterialTheme.colors.secondary
             ),
         shape = RoundedCornerShape(3.dp),
-        contentColor = MaterialTheme.colors.primaryVariant
     ) {
         Box(modifier = Modifier.clickable(
             onClick = {
-                openDialog.value = true
+                openWordDialog.value = true
             }
         )) {
             when {
-                openDialog.value -> {
+                openWordDialog.value -> {
                     WordDialog(word,
-                        onDismissRequest = { openDialog.value = false }
+                        onDismissRequest = { openWordDialog.value = false }
                     )
                 }
             }

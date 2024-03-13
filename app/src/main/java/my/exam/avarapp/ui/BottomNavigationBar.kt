@@ -8,28 +8,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import my.exam.avarapp.model.NavItem
+import my.exam.avarapp.model.NavScreen
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    val items = listOf(
-        NavItem.Dictionary,
-        NavItem.Info
+    val screens = listOf(
+        NavScreen.Dictionary,
+        NavScreen.Phrasebook,
+        NavScreen.Tutorial,
+        NavScreen.Info
     )
 
     BottomNavigation {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-        items.forEach { item ->
+        val currentDestination = navBackStackEntry?.destination
+        screens.forEach { screen ->
             BottomNavigationItem(
-                icon = { Icon(painterResource(id = item.icon), contentDescription = item.route) },
+                icon = { Icon(painterResource(id = screen.icon), contentDescription = screen.route) },
                 selectedContentColor = MaterialTheme.colors.secondary,
                 unselectedContentColor = MaterialTheme.colors.onPrimary.copy(0.4f),
                 alwaysShowLabel = false,
-                selected = currentRoute == item.route,
+                selected = currentDestination?.hierarchy?.any { it.route == screen.route || it.route?.startsWith(screen.route) ?: false } == true,
                 onClick = {
-                    navController.navigate(item.route) {
+                    navController.navigate(screen.route) {
                         // Pop up to the start destination of the graph to
                         // avoid building up a large stack of destinations
                         // on the back stack as users select items
