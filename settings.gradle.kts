@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "AvarApp"
-include ':app'
+include ("app")
