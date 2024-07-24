@@ -1,4 +1,4 @@
-package my.exam.avarapp.ui
+package my.exam.avarapp.ui.phrasebook
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,18 +19,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import my.exam.avarapp.model.TutorialEntity
+import my.exam.avarapp.model.CategoryPhraseEntity
+
 
 @Composable
-fun TutorialScreen(
-    navController: NavHostController,
+fun PhrasebookScreen(
     padding: PaddingValues,
-    tutorialListState: MutableState<List<TutorialEntity>>
+    categoryPhraseEntityListState: MutableState<List<CategoryPhraseEntity>>
 ) {
     Column(modifier = Modifier.padding(padding)) {
         Text(
-            text = "САМОУЧИТЕЛЬ АВАРСКОГО ЯЗЫКА",
+            text = "РУССКО-АВАРСКИЙ РАЗГОВОРНИК",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)
@@ -41,14 +40,9 @@ fun TutorialScreen(
             color = MaterialTheme.colors.secondary,
         )
         LazyColumn(Modifier.fillMaxSize()) {
-            itemsIndexed(tutorialListState.value) { _, tutorialEntity ->
-                TutorialCard(
-                    navController,
-                    tutorialEntity,
-                    tutorialListState.value.indexOf(tutorialEntity)
-                )
+            itemsIndexed(categoryPhraseEntityListState.value) { _, categoryPhraseEntity ->
+                PhraseCard(categoryPhraseEntity)
             }
         }
     }
 }
-

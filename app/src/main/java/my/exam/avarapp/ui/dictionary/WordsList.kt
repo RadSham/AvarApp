@@ -1,4 +1,4 @@
-package my.exam.avarapp.ui
+package my.exam.avarapp.ui.dictionary
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn

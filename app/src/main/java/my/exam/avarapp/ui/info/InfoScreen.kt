@@ -1,4 +1,4 @@
-package my.exam.avarapp.ui
+package my.exam.avarapp.ui.info
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

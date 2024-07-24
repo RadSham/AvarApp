@@ -1,4 +1,4 @@
-package my.exam.avarapp.ui
+package my.exam.avarapp.ui.activity
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

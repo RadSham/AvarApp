@@ -1,4 +1,4 @@
-package my.exam.avarapp.ui
+package my.exam.avarapp.ui.phrasebook
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -13,20 +13,17 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import my.exam.avarapp.model.NavScreen
-import my.exam.avarapp.model.TutorialEntity
+import my.exam.avarapp.model.CategoryPhraseEntity
 
 @Composable
-fun TutorialCard(
-    navController: NavHostController,
-    tutorialEntity: TutorialEntity,
-    indexOfTutorialEntity: Int
-) {
+fun PhraseCard(categoryPhraseEntity: CategoryPhraseEntity) {
+    val openPhraseDialog = remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -40,10 +37,15 @@ fun TutorialCard(
     ) {
         Box(modifier = Modifier.clickable(
             onClick = {
-                //pass to TutorialLesson screen
-                navController.navigate(NavScreen.TutorialLesson.route + "/" + indexOfTutorialEntity)
+                openPhraseDialog.value = true
             }
         )) {
+            when {
+                openPhraseDialog.value -> {
+                    PhraseDialog(categoryPhraseEntity
+                    ) { openPhraseDialog.value = false }
+                }
+            }
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -56,7 +58,7 @@ fun TutorialCard(
                     .padding(3.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = tutorialEntity.tutorialchapter)
+                Text(text = categoryPhraseEntity.categoryphrasename/*, fontWeight = FontWeight.Bold*/)
             }
         }
     }

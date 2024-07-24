@@ -1,4 +1,4 @@
-package my.exam.avarapp.ui
+package my.exam.avarapp.ui.activity
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -12,6 +12,11 @@ import my.exam.avarapp.model.CategoryPhraseEntity
 import my.exam.avarapp.model.NavScreen
 import my.exam.avarapp.model.TutorialEntity
 import my.exam.avarapp.model.WordEntity
+import my.exam.avarapp.ui.tutorial.TutorialLessonScreen
+import my.exam.avarapp.ui.tutorial.TutorialScreen
+import my.exam.avarapp.ui.dictionary.DictionaryScreen
+import my.exam.avarapp.ui.info.InfoScreen
+import my.exam.avarapp.ui.phrasebook.PhrasebookScreen
 
 @Composable
 fun NavigationSetup(

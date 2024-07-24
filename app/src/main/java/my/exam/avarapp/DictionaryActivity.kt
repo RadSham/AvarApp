@@ -15,9 +15,9 @@ import androidx.navigation.compose.rememberNavController
 import my.exam.avarapp.di.DaggerDictionaryActivityComponent
 import my.exam.avarapp.di.DictionaryActivityComponent
 import my.exam.avarapp.model.WordEntity
-import my.exam.avarapp.ui.BottomNavigationBar
-import my.exam.avarapp.ui.NavigationSetup
-import my.exam.avarapp.ui.ProcessBar
+import my.exam.avarapp.ui.activity.BottomNavigationBar
+import my.exam.avarapp.ui.activity.NavigationSetup
+import my.exam.avarapp.ui.activity.ProcessBar
 import my.exam.avarapp.ui.theme.AvarAppTheme
 import my.exam.avarapp.ui.theme.RedMain
 import my.exam.avarapp.viewmodel.DictionaryViewModel

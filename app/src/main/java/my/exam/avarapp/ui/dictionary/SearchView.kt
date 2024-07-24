@@ -1,4 +1,4 @@
-package my.exam.avarapp.ui
+package my.exam.avarapp.ui.dictionary
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

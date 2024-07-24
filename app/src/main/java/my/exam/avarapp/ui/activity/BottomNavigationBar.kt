@@ -1,4 +1,4 @@
-package my.exam.avarapp.ui
+package my.exam.avarapp.ui.activity
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
