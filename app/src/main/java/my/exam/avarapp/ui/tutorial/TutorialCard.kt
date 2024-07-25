@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import my.exam.avarapp.model.NavScreen
+import my.exam.avarapp.navigation.NavScreen
 import my.exam.avarapp.model.TutorialEntity
 
 @Composable

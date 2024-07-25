@@ -16,7 +16,6 @@ import my.exam.avarapp.di.DaggerDictionaryActivityComponent
 import my.exam.avarapp.di.DictionaryActivityComponent
 import my.exam.avarapp.model.WordEntity
 import my.exam.avarapp.ui.activity.BottomNavigationBar
-import my.exam.avarapp.ui.activity.NavigationSetup
 import my.exam.avarapp.ui.activity.ProcessBar
 import my.exam.avarapp.ui.theme.AvarAppTheme
 import my.exam.avarapp.ui.theme.RedMain
@@ -25,6 +24,7 @@ import my.exam.avarapp.viewmodel.Result
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import my.exam.avarapp.model.CategoryPhraseEntity
 import my.exam.avarapp.model.TutorialEntity
+import my.exam.avarapp.navigation.NavigationSetup
 import javax.inject.Inject
 
 class DictionaryActivity : ComponentActivity() {
@@ -71,7 +71,6 @@ class DictionaryActivity : ComponentActivity() {
                         when (it) {
                             is Result.Success -> {
                                 phrasesListState.value = it.value
-                                Log.d("MyLog", "size ${phrasesListState.value}")
 //                                progressBarLoading.value = false
                             }
                             is Result.Loading -> Log.d("MyLog", it.toString()) //progressBarLoading.value = true
@@ -86,7 +85,6 @@ class DictionaryActivity : ComponentActivity() {
                         when (it) {
                             is Result.Success -> {
                                 tutorialListState.value = it.value
-                                Log.d("MyLog", "size ${tutorialListState.value}")
 //                                progressBarLoading.value = false
                             }
                             is Result.Loading -> Log.d("MyLog", it.toString()) //progressBarLoading.value = true

@@ -16,10 +16,13 @@ composeBom = "2024.06.00"
 material = "1.12.0"
 navVersion = "2.7.7"
 kotlinComposeCompiler = "1.5.13"
+runtimeLivedata = "1.6.8"
+material3Android = "1.2.1"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navVersion" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerCompiler" }
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
@@ -34,6 +37,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-material = { group = "androidx.compose.material", name = "material" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

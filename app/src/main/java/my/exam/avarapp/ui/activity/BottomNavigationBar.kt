@@ -10,7 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import my.exam.avarapp.model.NavScreen
+import my.exam.avarapp.navigation.NavScreen
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -18,6 +18,7 @@ fun BottomNavigationBar(navController: NavController) {
         NavScreen.Dictionary,
         NavScreen.Phrasebook,
         NavScreen.Tutorial,
+        NavScreen.Chat,
         NavScreen.Info
     )
 

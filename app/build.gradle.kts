@@ -67,6 +67,7 @@ dependencies {
     implementation (libs.androidx.navigation.compose)
     implementation (libs.androidx.material)
     implementation (libs.android.material)
+    implementation(libs.androidx.runtime.livedata)
     //Tests
     testImplementation (libs.junit)
     androidTestImplementation (libs.androidx.junit)
@@ -79,7 +80,6 @@ dependencies {
     implementation (libs.gson)
     //Firebase
     implementation (platform(libs.firebase.bom))
-    implementation (libs.firebase.analytics.ktx)
     implementation (libs.firebase.auth.ktx)
     implementation (libs.firebase.firestore.ktx)
 }
