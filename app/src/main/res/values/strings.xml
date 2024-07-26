@@ -4,8 +4,15 @@
     <string name="rus_lang">Русский язык</string>
     <string name="eng_lang">English</string>
     <string name="tr_lang">Turkce</string>
+    <string name="authorization">Авторизация</string>
     <string name="registration">Регистрация</string>
     <string name="login">Вход</string>
+    <string name="logout">Выход</string>
     <string name="password">Пароль</string>
     <string name="email">Email</string>
+    <string name="signin_to_send_message">Для отправки сообщения войдите в личный кабинет</string>
+    <string name="write_message">Напишите сообщение</string>
+    <string name="personal_account">Личный кабинет</string>
+    <string name="enter">Вход</string>
+    <string name="godekhan">ГодекIан</string>
 </resources>

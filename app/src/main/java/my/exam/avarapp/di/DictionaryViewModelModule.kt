@@ -9,7 +9,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-abstract class ViewModelModule {
+abstract class DictionaryViewModelModule {
 
     @Binds
     @IntoMap

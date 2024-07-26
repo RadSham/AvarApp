@@ -2,6 +2,7 @@ package my.exam.avarapp
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.Scaffold
@@ -59,13 +60,14 @@ class DictionaryActivity : ComponentActivity() {
                                 wordsListState.value = it.value
                                 progressBarLoading.value = false
                             }
+
                             is Result.Loading -> progressBarLoading.value = true
                             is Result.Error -> Log.d("MyLog", it.toString())
                         }
                     }
                 }
 
-                LaunchedEffect(key1 = 2){
+                LaunchedEffect(key1 = 2) {
                     dictionaryViewModel.loadLocalPhrases(this@DictionaryActivity)
                     dictionaryViewModel.pStateFlow.collect {
                         when (it) {
@@ -73,13 +75,17 @@ class DictionaryActivity : ComponentActivity() {
                                 phrasesListState.value = it.value
 //                                progressBarLoading.value = false
                             }
-                            is Result.Loading -> Log.d("MyLog", it.toString()) //progressBarLoading.value = true
+
+                            is Result.Loading -> Log.d(
+                                "MyLog",
+                                it.toString()
+                            ) //progressBarLoading.value = true
                             is Result.Error -> Log.d("MyLog", it.toString())
                         }
                     }
                 }
 
-                LaunchedEffect(key1 = 3){
+                LaunchedEffect(key1 = 3) {
                     dictionaryViewModel.loadLocalTutorial(this@DictionaryActivity)
                     dictionaryViewModel.tStateFlow.collect {
                         when (it) {
@@ -87,7 +93,11 @@ class DictionaryActivity : ComponentActivity() {
                                 tutorialListState.value = it.value
 //                                progressBarLoading.value = false
                             }
-                            is Result.Loading -> Log.d("MyLog", it.toString()) //progressBarLoading.value = true
+
+                            is Result.Loading -> Log.d(
+                                "MyLog",
+                                it.toString()
+                            ) //progressBarLoading.value = true
                             is Result.Error -> Log.d("MyLog", it.toString())
                         }
                     }
@@ -104,14 +114,28 @@ class DictionaryActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 Scaffold(
                     bottomBar = {
-                    BottomNavigationBar(navController)
-                }) { padding ->
+                        BottomNavigationBar(navController)
+                    }) { padding ->
                     ProcessBar(progressBarLoading)
                     NavigationSetup(
-                        navController = navController, padding, wordsListState, phrasesListState, tutorialListState
+                        navController,
+                        padding,
+                        wordsListState,
+                        phrasesListState,
+                        tutorialListState,
+                        object : ShowToast {
+                            override fun show(message: String) {
+                                Toast.makeText(this@DictionaryActivity, message, Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                        }
                     )
                 }
             }
         }
     }
+}
+
+interface ShowToast {
+    fun show(message: String)
 }

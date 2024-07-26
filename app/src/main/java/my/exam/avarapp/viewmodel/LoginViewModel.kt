@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import my.exam.avarapp.ShowToast
 import java.lang.IllegalArgumentException
 
 /**
@@ -34,21 +35,27 @@ class LoginViewModel : ViewModel() {
     }
 
     // Register user
-    fun loginUser(chat: () -> Unit) {
+    fun loginUser(chat: () -> Unit, showToast: ShowToast) {
         if (_loading.value == false) {
-            val email: String = _email.value ?: throw IllegalArgumentException("email expected")
-            val password: String =
-                _password.value ?: throw IllegalArgumentException("password expected")
+            if (!_email.value.isNullOrEmpty() && _password.value.isNullOrEmpty()) {
+                val email: String = _email.value ?: throw IllegalArgumentException("email expected")
+                val password: String =
+                    _password.value ?: throw IllegalArgumentException("password expected")
 
-            _loading.value = true
+                _loading.value = true
 
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        chat()
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            chat()
+                        } else {
+                            showToast.show("Неверный логин или пароль")
+                        }
+                        _loading.value = false
                     }
-                    _loading.value = false
-                }
+            } else {
+                showToast.show("Неверный логин или пароль")
+            }
         }
     }
 }

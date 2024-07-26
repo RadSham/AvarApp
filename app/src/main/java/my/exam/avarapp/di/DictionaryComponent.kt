@@ -8,7 +8,7 @@ import javax.inject.Qualifier
 import javax.inject.Scope
 
 @DictionaryScope
-@Component(dependencies = [ApplicationComponent::class], modules = [ViewModelModule::class])
+@Component(dependencies = [ApplicationComponent::class], modules = [DictionaryViewModelModule::class])
 interface DictionaryActivityComponent {
 
     fun inject(dictionaryActivity: DictionaryActivity)

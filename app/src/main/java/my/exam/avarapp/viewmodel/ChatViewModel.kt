@@ -7,11 +7,16 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import my.exam.avarapp.ShowToast
 import my.exam.avarapp.model.Constants
 
 class ChatViewModel : ViewModel() {
     init {
         getMessages()
+    }
+
+    fun checkUser(): Boolean {
+        return Firebase.auth.currentUser?.uid != null
     }
 
     private val _message = MutableLiveData("")
@@ -30,18 +35,23 @@ class ChatViewModel : ViewModel() {
     /**
      * Send message
      */
-    fun addMessage() {
-        val message: String = _message.value ?: throw IllegalArgumentException("message empty")
-        if (message.isNotEmpty()) {
-            Firebase.firestore.collection(Constants.MESSAGES).document().set(
-                hashMapOf(
-                    Constants.MESSAGE to message,
-                    Constants.SENT_BY to Firebase.auth.currentUser?.uid,
-                    Constants.SENT_ON to System.currentTimeMillis()
-                )
-            ).addOnSuccessListener {
-                _message.value = ""
+    fun addMessage(showToast: ShowToast) {
+        if (Firebase.auth.currentUser?.uid != null) {
+            val message: String = _message.value ?: throw IllegalArgumentException("message empty")
+            if (message.isNotEmpty()) {
+                Firebase.firestore.collection(Constants.MESSAGES).document().set(
+                    hashMapOf(
+                        Constants.MESSAGE to message,
+                        Constants.SENT_BY to Firebase.auth.currentUser?.uid,
+                        Constants.USER_EMAIL to Firebase.auth.currentUser?.email,
+                        Constants.SENT_ON to System.currentTimeMillis()
+                    )
+                ).addOnSuccessListener {
+                    _message.value = ""
+                }
             }
+        } else {
+            showToast.show("Для отправки сообщения войдите в личный кабинет")
         }
     }
 

@@ -13,9 +13,10 @@ sealed class NavScreen(var route: String, var icon: Int) {
     object Tutorial : NavScreen("Tutorial", R.drawable.ic_tutorial)
     object TutorialLesson : NavScreen("TutorialLesson", R.drawable.ic_tutorial)
     object Chat : NavScreen("Chat", R.drawable.ic_chat)
-    object AuthOptions : NavScreen("AuthOptions", R.drawable.ic_accounts)
-    object Login : NavScreen("Login", R.drawable.ic_accounts)
-    object Register : NavScreen("Register", R.drawable.ic_accounts)
+    object AuthOptions : NavScreen("ChatAuthOptions", R.drawable.ic_accounts)
+    object Login : NavScreen("ChatLogin", R.drawable.ic_accounts)
+    object Register : NavScreen("ChatRegister", R.drawable.ic_accounts)
+    object Account : NavScreen("ChatAccount", R.drawable.ic_accounts)
 }
 
 /**
@@ -31,10 +32,17 @@ class Action(navController: NavHostController) {
             popUpTo(NavScreen.Register.route) {
                 inclusive = true
             }
+            popUpTo(NavScreen.Account.route) {
+                inclusive = true
+            }
+            popUpTo(NavScreen.AuthOptions.route) {
+                inclusive = true
+            }
         }
     }
     val login: () -> Unit = { navController.navigate(NavScreen.Login.route) }
     val register: () -> Unit = { navController.navigate(NavScreen.Register.route) }
     val authOptions: () -> Unit = { navController.navigate(NavScreen.AuthOptions.route) }
+    val account: () -> Unit = { navController.navigate(NavScreen.Account.route) }
     val navigateBack: () -> Unit = { navController.popBackStack() }
 }
