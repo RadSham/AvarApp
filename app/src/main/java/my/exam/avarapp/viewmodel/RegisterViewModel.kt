@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import my.exam.avarapp.ShowToast
 import java.lang.IllegalArgumentException
 
 /**
@@ -34,7 +35,7 @@ class RegisterViewModel : ViewModel() {
     }
 
     // Register user
-    fun registerUser(chat: () -> Unit) {
+    fun registerUser(chat: () -> Unit, showToast: ShowToast) {
         if (_loading.value == false) {
             val email: String = _email.value ?: throw IllegalArgumentException("email expected")
             val password: String =
@@ -42,10 +43,11 @@ class RegisterViewModel : ViewModel() {
 
             _loading.value = true
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener {
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful) {
                         chat()
+                    } else {
+                        showToast.show("Неудалось зарегистрировать пользователя")
                     }
                     _loading.value = false
                 }

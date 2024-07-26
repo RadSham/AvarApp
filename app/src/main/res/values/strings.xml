@@ -11,8 +11,10 @@
     <string name="password">Пароль</string>
     <string name="email">Email</string>
     <string name="signin_to_send_message">Для отправки сообщения войдите в личный кабинет</string>
-    <string name="write_message">Напишите сообщение</string>
+    <string name="message">Сообщение</string>
     <string name="personal_account">Личный кабинет</string>
     <string name="enter">Вход</string>
     <string name="godekhan">ГодекIан</string>
+    <string name="invalid_email">Некорректный email</string>
+    <string name="invalid_password">Некорректный пароль. Пароль не может быть менее 6 символов</string>
 </resources>

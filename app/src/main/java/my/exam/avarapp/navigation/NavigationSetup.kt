@@ -8,8 +8,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.project.pradyotprakash.flashchat.view.login.LoginScreen
-import com.project.pradyotprakash.flashchat.view.register.RegisterScreen
+import my.exam.avarapp.ui.account.LoginScreen
+import my.exam.avarapp.ui.account.RegisterScreen
 import my.exam.avarapp.ShowToast
 import my.exam.avarapp.model.CategoryPhraseEntity
 import my.exam.avarapp.model.TutorialEntity
@@ -83,7 +83,8 @@ fun NavigationSetup(
         composable(NavScreen.Register.route) {
             RegisterScreen(
                 chat = Action(navController).chat,
-                back = Action(navController).navigateBack
+                back = Action(navController).navigateBack,
+                showToast = showToast
             )
         }
         composable(NavScreen.Login.route) {
@@ -94,9 +95,7 @@ fun NavigationSetup(
             )
         }
         composable(NavScreen.Account.route) {
-            AccountScreen(
-                back = Action(navController).navigateBack
-            )
+            AccountScreen(Action(navController).navigateBack)
         }
     }
 }

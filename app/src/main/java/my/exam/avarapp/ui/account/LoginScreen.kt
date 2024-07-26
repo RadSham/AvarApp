@@ -1,5 +1,6 @@
-package com.project.pradyotprakash.flashchat.view.login
+package my.exam.avarapp.ui.account
 
+import android.util.Patterns
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,10 +18,14 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,6 +54,8 @@ fun LoginScreen(
     val email: String by loginViewModel.email.observeAsState("")
     val password: String by loginViewModel.password.observeAsState("")
     val loading: Boolean by loginViewModel.loading.observeAsState(initial = false)
+    var isErrorEmail by remember { mutableStateOf(false) }
+    var isErrorPassword by remember { mutableStateOf(false) }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -79,66 +86,135 @@ fun LoginScreen(
             )
             CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
                 OutlinedTextField(
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp, vertical = 5.dp)
+                        .fillMaxWidth(),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         cursorColor = MaterialTheme.colors.secondary,
                         textColor = Color.Black,
-                        focusedBorderColor = MaterialTheme.colors.secondary,
-                        unfocusedBorderColor = MaterialTheme.colors.secondary.copy(alpha = 0.4f),
+                        focusedBorderColor = MaterialTheme.colors.primaryVariant,
+                        unfocusedBorderColor = MaterialTheme.colors.secondaryVariant
                     ),
                     value = email,
-                    onValueChange = { loginViewModel.updateEmail(it) },
+                    onValueChange = {
+                        loginViewModel.updateEmail(it)
+                        isErrorEmail = false
+                    },
                     label = {
                         Text(
                             stringResource(id = R.string.email),
                             color = MaterialTheme.colors.primaryVariant
                         )
                     },
+                    trailingIcon = {
+                        if (email.isNotEmpty()) {
+                            IconButton(onClick = { loginViewModel.updateEmail("") }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Close,
+                                    contentDescription = "ic_close",
+                                    tint = MaterialTheme.colors.secondary
+                                )
+                            }
+                        }
+                    },
                     maxLines = 1,
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 5.dp)
-                        .fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email
                     ),
                     singleLine = true,
-                    visualTransformation = VisualTransformation.None
+                    visualTransformation = VisualTransformation.None,
+                    isError = isErrorEmail,
                 )
+                if (isErrorEmail) {
+                    Text(
+                        text = stringResource(id = R.string.invalid_email),
+                        color = MaterialTheme.colors.error,
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier
+                            .align(Alignment.Start)
+                            .padding(start = 20.dp, end = 20.dp)
+                    )
+                }
             }
             CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
                 OutlinedTextField(
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp, vertical = 5.dp)
+                        .fillMaxWidth(),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         cursorColor = MaterialTheme.colors.secondary,
                         textColor = Color.Black,
-                        focusedBorderColor = MaterialTheme.colors.secondary,
-                        unfocusedBorderColor = MaterialTheme.colors.secondary.copy(alpha = 0.4f),
+                        focusedBorderColor = MaterialTheme.colors.primaryVariant,
+                        unfocusedBorderColor = MaterialTheme.colors.secondaryVariant
                     ),
                     value = password,
-                    onValueChange = { loginViewModel.updatePassword(it) },
+                    onValueChange = {
+                        loginViewModel.updatePassword(it)
+                        isErrorPassword = false
+                    },
                     label = {
                         Text(
                             stringResource(id = R.string.password),
                             color = MaterialTheme.colors.primaryVariant
                         )
                     },
+                    trailingIcon = {
+                        if (password.isNotEmpty()) {
+                            IconButton(onClick = { loginViewModel.updatePassword("") }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Close,
+                                    contentDescription = "ic_close",
+                                    tint = MaterialTheme.colors.secondary
+                                )
+                            }
+                        }
+                    },
                     maxLines = 1,
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 5.dp)
-                        .fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password
                     ),
                     singleLine = true,
-                    visualTransformation = PasswordVisualTransformation()
+                    visualTransformation = PasswordVisualTransformation(),
+                    isError = isErrorPassword,
                 )
+                if (isErrorPassword) {
+                    Text(
+                        text = stringResource(id = R.string.invalid_password),
+                        color = MaterialTheme.colors.error,
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier
+                            .align(Alignment.Start)
+                            .padding(start = 20.dp, end = 20.dp)
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(20.dp))
+            fun checkDetails(): Boolean {
+                var isAllFilledInCorrectly = true
+                if (!emailValidator(email)) {
+                    isErrorEmail = true
+                    isAllFilledInCorrectly = false
+                }
+                if (password.length < 6) {
+                    isErrorPassword = true
+                    isAllFilledInCorrectly = false
+                }
+                return isAllFilledInCorrectly
+            }
             Button(
-                onClick = { loginViewModel.loginUser(chat = chat, showToast) },
+                onClick = {
+                    if (checkDetails()) {
+                        loginViewModel.loginUser(chat = chat, showToast)
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = MaterialTheme.colors.secondary,
                     contentColor = Color.White
                 ),
-                modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp)
+                    .height(50.dp),
                 shape = RoundedCornerShape(20),
             ) {
                 Text(
@@ -146,5 +222,13 @@ fun LoginScreen(
                 )
             }
         }
+    }
+}
+
+private fun emailValidator(stringEmail: String): Boolean {
+    if (!stringEmail.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(stringEmail).matches()) {
+        return true
+    } else {
+        return false
     }
 }

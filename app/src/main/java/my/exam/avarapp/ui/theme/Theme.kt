@@ -21,9 +21,8 @@ private val LightColorPalette = lightColors(
     onPrimary = Black,
     secondary = RedMain,
     primaryVariant = Gray,
-    secondaryVariant = DividerColor
-
-
+    secondaryVariant = DividerColor,
+    onBackground = RedMessageBackground
 
     /* Other default colors to override
     background = Color.White,

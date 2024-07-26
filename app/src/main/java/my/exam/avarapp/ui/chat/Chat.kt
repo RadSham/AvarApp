@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.Card
@@ -30,12 +29,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import my.exam.avarapp.R
 import my.exam.avarapp.ShowToast
 import my.exam.avarapp.model.Constants
 import my.exam.avarapp.viewmodel.ChatViewModel
@@ -85,21 +81,11 @@ fun Chat(
                 ),
                 value = message,
                 onValueChange = { chatViewModel.updateMessage(it) },
-                label = {
-                    Text(
-                        stringResource(id = R.string.write_message),
-                        color = MaterialTheme.colors.primaryVariant
-                    )
-                },
-                maxLines = 1,
+                maxLines = 3,
                 modifier = Modifier
                     .padding(horizontal = 15.dp, vertical = 1.dp)
                     .fillMaxWidth()
-                    .weight(weight = 0.09f, fill = true),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text
-                ),
-                singleLine = true,
+                    .weight(weight = 0.09f, fill = false),
                 trailingIcon = {
                     IconButton(
                         onClick = {
@@ -130,8 +116,8 @@ fun SingleMessage(message: String, userEmail: String, isCurrentUser: Boolean) {
                 bottomStart = if (isCurrentUser) 48f else 0f,
                 bottomEnd = if (isCurrentUser) 0f else 48f
             ),
-            backgroundColor = if (isCurrentUser) MaterialTheme.colors.secondary.copy(0.05f)
-            else MaterialTheme.colors.secondaryVariant.copy(0.05f),
+            backgroundColor = if (isCurrentUser) MaterialTheme.colors.onBackground
+            else Color.White,
         ) {
             Column {
                 Text(

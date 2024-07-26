@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -25,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import my.exam.avarapp.R
 import my.exam.avarapp.viewmodel.AccountViewModel
@@ -71,7 +74,7 @@ fun AccountScreen(
                 painter = painterResource(R.drawable.ic_avarapp_logo),
                 contentDescription = "ic_launcher_avarapp"
             )
-            Text(text = email)
+            Text(text = email, modifier = Modifier.padding(20.dp))
             Button(
                 onClick = {
                     accountViewModel.logOut()
@@ -81,8 +84,11 @@ fun AccountScreen(
                     backgroundColor = MaterialTheme.colors.secondary,
                     contentColor = Color.White
                 ),
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(0),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp)
+                    .height(50.dp),
+                shape = RoundedCornerShape(20)
             ) {
                 Text(
                     text = stringResource(id = R.string.logout)

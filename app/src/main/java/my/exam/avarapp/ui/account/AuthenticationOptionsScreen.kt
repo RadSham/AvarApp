@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -70,7 +71,10 @@ fun AuthenticationOptionsScreen(
                         backgroundColor = MaterialTheme.colors.secondary,
                         contentColor = Color.White
                     ),
-                    modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp)
+                        .height(50.dp),
                     shape = RoundedCornerShape(20),
                 ) {
                     Text(
@@ -83,7 +87,10 @@ fun AuthenticationOptionsScreen(
                     colors = ButtonDefaults.buttonColors(
                         contentColor = MaterialTheme.colors.secondary
                     ),
-                    modifier = Modifier.fillMaxWidth().padding(start = 20.dp, top = 10.dp, end = 20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, top = 10.dp, end = 20.dp)
+                        .height(50.dp),
                     shape = RoundedCornerShape(20),
                 ) {
                     Text(
