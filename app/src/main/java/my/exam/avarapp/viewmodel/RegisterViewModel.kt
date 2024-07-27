@@ -44,13 +44,15 @@ class RegisterViewModel : ViewModel() {
             _loading.value = true
 
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        chat()
-                    } else {
-                        showToast.show("Неудалось зарегистрировать пользователя")
-                    }
-                    _loading.value = false
+                if (it.isSuccessful) {
+                    auth.currentUser?.sendEmailVerification()
+                    showToast.show("Письмо для подтверждения регистрации было отправлено на адрес  ${auth.currentUser?.email}. Пожалуйста, подтвердите свой аккаунт")
+                    chat()
+                } else {
+                    showToast.show("Неудалось зарегистрировать пользователя")
                 }
+                _loading.value = false
+            }
         }
     }
 }

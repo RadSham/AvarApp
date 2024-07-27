@@ -34,6 +34,7 @@ import my.exam.avarapp.viewmodel.AccountViewModel
 
 @Composable
 fun AccountScreen(
+    chat: () -> Unit,
     back: () -> Unit,
     accountViewModel: AccountViewModel = viewModel()
 ) {
@@ -78,7 +79,7 @@ fun AccountScreen(
             Button(
                 onClick = {
                     accountViewModel.logOut()
-                    back()
+                    chat()
                 },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = MaterialTheme.colors.secondary,

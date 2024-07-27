@@ -67,7 +67,6 @@ fun NavigationSetup(
             ChatScreen(
                 authOptions = Action(navController).authOptions,
                 account = Action(navController).account,
-                back = Action(navController).navigateBack,
                 paddingValues = paddingValues,
                 showToast = showToast
             )
@@ -95,7 +94,7 @@ fun NavigationSetup(
             )
         }
         composable(NavScreen.Account.route) {
-            AccountScreen(Action(navController).navigateBack)
+            AccountScreen(chat = Action(navController).chat, Action(navController).navigateBack)
         }
     }
 }

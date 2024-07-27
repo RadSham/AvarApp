@@ -36,6 +36,7 @@ class LoginViewModel : ViewModel() {
 
     // Register user
     fun loginUser(chat: () -> Unit, showToast: ShowToast) {
+        auth.currentUser?.reload()
         if (_loading.value == false) {
             val email: String = _email.value ?: throw IllegalArgumentException("email expected")
             val password: String =
@@ -43,15 +44,14 @@ class LoginViewModel : ViewModel() {
 
             _loading.value = true
 
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        chat()
-                    } else {
-                        showToast.show("Неверный логин или пароль")
-                    }
-                    _loading.value = false
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    chat()
+                } else {
+                    showToast.show("Неверный логин или пароль")
                 }
+                _loading.value = false
+            }
         }
     }
 }

@@ -26,11 +26,11 @@ import my.exam.avarapp.viewmodel.ChatViewModel
 fun ChatScreen(
     authOptions: () -> Unit,
     account: () -> Unit,
-    back: () -> Unit,
     paddingValues: PaddingValues,
     showToast: ShowToast,
     chatViewModel: ChatViewModel = viewModel()
 ) {
+
     Box(modifier = Modifier.padding(paddingValues)) {
         Scaffold(
             topBar = {
@@ -41,13 +41,10 @@ fun ChatScreen(
                             textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()
                         )
                     },
-                    /*navigationIcon = {
-                        IconButton(onClick = back) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, "backIcon")
-                        }
-                    },*/
                     actions = {
-                        IconButton(onClick = if (chatViewModel.checkUser()) account else authOptions) {
+                        IconButton(
+                            onClick = if (chatViewModel.checkUserExists()) account else authOptions
+                        ) {
                             Icon(
                                 imageVector = Icons.Filled.AccountCircle,
                                 contentDescription = "Account"

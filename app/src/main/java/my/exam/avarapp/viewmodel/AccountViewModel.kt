@@ -23,5 +23,6 @@ class AccountViewModel : ViewModel() {
 
     fun logOut() {
         auth.signOut()
+        auth.currentUser?.reload()
     }
 }
