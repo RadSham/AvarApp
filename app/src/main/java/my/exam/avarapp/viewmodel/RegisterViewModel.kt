@@ -46,7 +46,7 @@ class RegisterViewModel : ViewModel() {
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
                     auth.currentUser?.sendEmailVerification()
-                    showToast.show("Письмо для подтверждения регистрации было отправлено на адрес  ${auth.currentUser?.email}. Пожалуйста, подтвердите свой аккаунт")
+                    showToast.show("Ссылка подтверждения отправлена на ${auth.currentUser?.email}")
                     chat()
                 } else {
                     showToast.show("Неудалось зарегистрировать пользователя")

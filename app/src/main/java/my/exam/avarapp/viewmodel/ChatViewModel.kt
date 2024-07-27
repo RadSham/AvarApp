@@ -4,28 +4,42 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import my.exam.avarapp.ShowToast
 import my.exam.avarapp.model.Constants
+import my.exam.avarapp.repository.FirebaseDatasource
 
 class ChatViewModel : ViewModel() {
+    private var firebaseDatasource: FirebaseDatasource = FirebaseDatasource()
+    private val _currentUserIsVerifiedState = MutableStateFlow(false)
+    val currentUserIsVerifiedState
+         = _currentUserIsVerifiedState.asStateFlow()
+
+    private fun getCurrentUserVerified() = viewModelScope.launch {
+        firebaseDatasource.getCurrentUserIsVerified().collectLatest { fbUserisEmailVerified ->
+            _currentUserIsVerifiedState.value = fbUserisEmailVerified
+        }
+    }
+
     private var auth: FirebaseAuth = Firebase.auth
 
     init {
-        auth.currentUser?.reload()
+        getCurrentUserVerified()
+        firebaseDatasource.currentUserReload()
         getMessages()
     }
 
     fun checkUserExists(): Boolean {
-        auth.currentUser?.reload()
-        return auth.currentUser?.uid != null
-    }
-
-    private fun checkUserVerified(): Boolean {
-        return auth.currentUser?.isEmailVerified == true
+        firebaseDatasource.currentUserReload()
+        return firebaseDatasource.currentUserUid() != null
     }
 
     private val _message = MutableLiveData("")
@@ -46,14 +60,14 @@ class ChatViewModel : ViewModel() {
      */
     fun addMessage(showToast: ShowToast) {
         if (checkUserExists()) {
-            if (checkUserVerified()) {
+            if (currentUserIsVerifiedState.value) {
                 val message: String =
                     _message.value ?: throw IllegalArgumentException("message empty")
                 if (message.isNotEmpty()) {
                     Firebase.firestore.collection(Constants.MESSAGES).document().set(
                         hashMapOf(
                             Constants.MESSAGE to message,
-                            Constants.SENT_BY to auth.currentUser!!.uid,
+                            Constants.SENT_BY to firebaseDatasource.currentUserUid(),
                             Constants.USER_EMAIL to auth.currentUser!!.email,
                             Constants.SENT_ON to System.currentTimeMillis()
                         )
@@ -62,7 +76,7 @@ class ChatViewModel : ViewModel() {
                     }
                 }
             } else {
-                showToast.show("Для отправки сообщений, пожалуйста, подтвердите свой аккаунт. Письмо для подтверждения регистрации было отправлено на ${auth.currentUser?.email}")
+                showToast.show("Для отправки сообщений подтвердите ${auth.currentUser?.email}")
                 auth.currentUser?.sendEmailVerification()
             }
         } else {
@@ -74,7 +88,6 @@ class ChatViewModel : ViewModel() {
      * Get the messages
      */
     private fun getMessages() {
-        println(auth.currentUser?.uid)
         Firebase.firestore.collection(Constants.MESSAGES)
             .orderBy(Constants.SENT_ON)
             .addSnapshotListener { value, e ->
