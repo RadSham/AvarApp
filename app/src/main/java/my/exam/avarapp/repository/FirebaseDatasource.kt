@@ -14,6 +14,10 @@ import kotlinx.coroutines.tasks.await
 class FirebaseDatasource {
     private var firebaseAuth: FirebaseAuth = Firebase.auth
 
+    init {
+        firebaseAuth.useAppLanguage()
+    }
+
     fun currentUserReload() {
         firebaseAuth.currentUser?.reload()
     }

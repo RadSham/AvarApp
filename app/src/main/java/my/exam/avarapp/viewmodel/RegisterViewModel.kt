@@ -42,7 +42,8 @@ class RegisterViewModel : ViewModel() {
                 _password.value ?: throw IllegalArgumentException("password expected")
 
             _loading.value = true
-
+            //email language
+            auth.useAppLanguage()
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
                     auth.currentUser?.sendEmailVerification()
