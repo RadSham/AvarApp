@@ -54,4 +54,23 @@ class LoginViewModel : ViewModel() {
             }
         }
     }
+
+    // Reset password
+    fun resetPassword(showToast: ShowToast) {
+        auth.currentUser?.reload()
+        if (_loading.value == false) {
+            val email: String = _email.value ?: throw IllegalArgumentException("email expected")
+
+            _loading.value = true
+            auth.useAppLanguage()
+            auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        auth.currentUser?.reload()
+                        showToast.show("Письмо для сброса пароля отправлено на ${_email.value}")
+                    }
+                    _loading.value = false
+                }
+        }
+    }
 }

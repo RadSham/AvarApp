@@ -24,7 +24,7 @@ class FirebaseDatasource {
 
     suspend fun getCurrentUserIsVerified() = callbackFlow {
         while (currentCoroutineContext().isActive) {
-            delay(10000)
+            delay(5000)
             try {
                 val user = firebaseAuth.currentUser
                 if (user != null) {

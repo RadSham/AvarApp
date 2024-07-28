@@ -1,6 +1,7 @@
 package my.exam.avarapp.ui.account
 
 import android.util.Patterns
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,6 +13,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -219,6 +221,25 @@ fun LoginScreen(
             ) {
                 Text(
                     text = stringResource(id = R.string.enter)
+                )
+            }
+            OutlinedButton(
+                onClick = {
+                    if (!emailValidator(email)) isErrorEmail = true
+                    else loginViewModel.resetPassword(showToast)
+                },
+                border = BorderStroke(1.dp, MaterialTheme.colors.secondary),
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = MaterialTheme.colors.secondary
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, top = 10.dp, end = 20.dp)
+                    .height(50.dp),
+                shape = RoundedCornerShape(20),
+            ) {
+                Text(
+                    text = "Сбросить пароль"
                 )
             }
         }
