@@ -18,6 +18,10 @@ class FirebaseDatasource {
         firebaseAuth.useAppLanguage()
     }
 
+    fun getFirebaseAuth(): FirebaseAuth {
+        return firebaseAuth
+    }
+
     fun currentUserReload() {
         firebaseAuth.currentUser?.reload()
     }

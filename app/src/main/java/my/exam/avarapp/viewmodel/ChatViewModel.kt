@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,17 +18,17 @@ import my.exam.avarapp.repository.FirebaseDatasource
 
 class ChatViewModel : ViewModel() {
     private var firebaseDatasource: FirebaseDatasource = FirebaseDatasource()
-    private val _currentUserIsVerifiedState = MutableStateFlow(false)
-    val currentUserIsVerifiedState
-         = _currentUserIsVerifiedState.asStateFlow()
+    private var auth: FirebaseAuth = firebaseDatasource.getFirebaseAuth()
+
+    private val _currentUserIsVerifiedState =
+        MutableStateFlow(auth.currentUser?.isEmailVerified == true)
+    val currentUserIsVerifiedState = _currentUserIsVerifiedState.asStateFlow()
 
     private fun getCurrentUserVerified() = viewModelScope.launch {
         firebaseDatasource.getCurrentUserIsVerified().collectLatest { fbUserisEmailVerified ->
             _currentUserIsVerifiedState.value = fbUserisEmailVerified
         }
     }
-
-    private var auth: FirebaseAuth = Firebase.auth
 
     init {
         getCurrentUserVerified()
