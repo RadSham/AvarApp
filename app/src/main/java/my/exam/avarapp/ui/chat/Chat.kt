@@ -1,5 +1,6 @@
 package my.exam.avarapp.ui.chat
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.Card
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -22,6 +24,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -29,6 +32,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,6 +46,8 @@ fun Chat(
     showToast: ShowToast,
 ) {
     val message: String by chatViewModel.message.observeAsState(initial = "")
+    val repliableMessage: String by chatViewModel.repliableMessageText.observeAsState(initial = "")
+    val showRepliableMessage: Boolean by chatViewModel.showRepliableMessage.observeAsState(initial = false)
     val messages: List<Map<String, Any>> by chatViewModel.messages.observeAsState(
         initial = emptyList<Map<String, Any>>().toMutableList()
     )
@@ -59,54 +65,90 @@ fun Chat(
             reverseLayout = true
         ) {
             items(messages) { message ->
-                val isCurrentUser = message[Constants.IS_CURRENT_USER] as Boolean
-                SingleMessage(
-                    message = message[Constants.MESSAGE].toString(),
-                    userEmail = message[Constants.USER_EMAIL].toString(),
-                    isCurrentUser = isCurrentUser
-                )
+                DrawerMotionSwipe(message, object : UpdateRepliableMessageId {
+                    override fun update(messageId: String) {
+                        chatViewModel.updateRepliableMessageId(messageId)
+                    }
+                }, object : UpdateRepliableMessageText {
+                    override fun update(messageText: String) {
+                        chatViewModel.updateRepliableMessageText(messageText)
+                    }
+                }, object : ShowRepliableMessage {
+                    override fun show(boolean: Boolean) {
+                        chatViewModel.updateShowRepliableMessage(boolean)
+                    }
+                })
             }
         }
+        //make text selectable
         val customTextSelectionColors = TextSelectionColors(
             handleColor = MaterialTheme.colors.secondary,
             backgroundColor = MaterialTheme.colors.secondary.copy(alpha = 0.4f)
         )
         CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
-            OutlinedTextField(
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    cursorColor = MaterialTheme.colors.secondary,
-                    textColor = Color.Black,
-                    focusedBorderColor = MaterialTheme.colors.secondary,
-                    unfocusedBorderColor = MaterialTheme.colors.secondary.copy(alpha = 0.4f)
-                ),
-                value = message,
-                onValueChange = { chatViewModel.updateMessage(it) },
-                maxLines = 3,
-                modifier = Modifier
-                    .padding(horizontal = 15.dp, vertical = 1.dp)
-                    .fillMaxWidth()
-                    .weight(weight = 0.09f, fill = false),
-                trailingIcon = {
-                    IconButton(
-                        onClick = {
-                            chatViewModel.addMessage(showToast)
+            Column(
+                Modifier.border(
+                    width = 1.dp,
+                    color = MaterialTheme.colors.secondary,
+                    shape = RectangleShape
+                )
+            ) {
+                //Repliable message
+                if (showRepliableMessage) OutlinedTextField(
+                    modifier = Modifier
+                        .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+                        .fillMaxWidth(),
+                    enabled = false,
+                    value = repliableMessage,
+                    maxLines = 2,
+                    onValueChange = { },
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            chatViewModel.updateRepliableMessageText("")
+                            chatViewModel.updateShowRepliableMessage(false)
+                        }) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "Close Repliable Message"
+                            )
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = "Send Button"
-                        )
-                    }
-                }
-            )
+                    },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        backgroundColor = MaterialTheme.colors.onSecondary,
+                    )
+                )
+                //New message
+                OutlinedTextField(colors = TextFieldDefaults.outlinedTextFieldColors(
+                    cursorColor = MaterialTheme.colors.secondary.copy(alpha = 0.4f),
+                    textColor = Color.Black,
+                    unfocusedBorderColor = MaterialTheme.colors.primary.copy(alpha = ContentAlpha.high),
+                ),
+                    value = message,
+                    onValueChange = { chatViewModel.updateMessage(it) },
+                    maxLines = 3,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            chatViewModel.addMessage(showToast)
+                        }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.Send,
+                                contentDescription = "Send Button"
+                            )
+                        }
+                    })
+            }
         }
     }
 }
 
 @Composable
-fun SingleMessage(message: String, userEmail: String, isCurrentUser: Boolean) {
+fun SingleMessage(message: Map<String, Any>) {
+    val isCurrentUser = message[Constants.IS_CURRENT_USER] as Boolean
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         contentAlignment = if (isCurrentUser) Alignment.CenterEnd else Alignment.CenterStart
     ) {
         Card(
@@ -119,22 +161,45 @@ fun SingleMessage(message: String, userEmail: String, isCurrentUser: Boolean) {
             backgroundColor = if (isCurrentUser) MaterialTheme.colors.onBackground
             else Color.White,
         ) {
-            Column {
+            Column(Modifier.border(
+                width = 1.dp,
+                MaterialTheme.colors.secondaryVariant,
+                shape = RectangleShape
+            )) {
+                if (message[Constants.REPLY_TO_ID] != Constants.ALL) {
+                    OutlinedTextField(
+                        value = message[Constants.REPLY_TO_TEXT].toString(),
+                        modifier = Modifier
+                            .padding(start = 10.dp, top = 10.dp, end = 10.dp)
+                            .wrapContentWidth()
+                            .border(
+                                width = 1.dp,
+                                MaterialTheme.colors.onBackground,
+                                shape = RectangleShape
+                            )
+                            .align(if (isCurrentUser) Alignment.End else Alignment.Start),
+                        enabled = false,
+                        maxLines = 1,
+                        onValueChange = {},
+                        trailingIcon = {},
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            backgroundColor = MaterialTheme.colors.onSecondary,
+                        )
+                    )
+                }
                 Text(
-                    text = userEmail,
+                    text = message[Constants.USER_EMAIL].toString(),
                     color = MaterialTheme.colors.secondary,
                     modifier = Modifier
                         .wrapContentWidth()
                         .padding(
-                            start = 10.dp,
-                            top = 10.dp,
-                            end = 10.dp
+                            start = 10.dp, top = 10.dp, end = 10.dp
                         ),
                     textAlign = if (isCurrentUser) TextAlign.End else TextAlign.Start,
                     fontSize = 10.sp,
                 )
                 Text(
-                    text = message,
+                    text = message[Constants.MESSAGE].toString(),
                     modifier = Modifier
                         .wrapContentWidth()
                         .padding(10.dp),
@@ -144,4 +209,16 @@ fun SingleMessage(message: String, userEmail: String, isCurrentUser: Boolean) {
             }
         }
     }
+}
+
+interface UpdateRepliableMessageText {
+    fun update(messageText: String)
+}
+
+interface UpdateRepliableMessageId {
+    fun update(messageId: String)
+}
+
+interface ShowRepliableMessage {
+    fun show(boolean: Boolean)
 }

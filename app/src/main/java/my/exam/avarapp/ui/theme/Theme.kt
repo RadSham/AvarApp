@@ -20,6 +20,7 @@ private val LightColorPalette = lightColors(
     primary = White,
     onPrimary = Black,
     secondary = RedMain,
+    onSecondary = RedRepliableMessageBackground,
     primaryVariant = Gray,
     secondaryVariant = DividerColor,
     onBackground = RedMessageBackground

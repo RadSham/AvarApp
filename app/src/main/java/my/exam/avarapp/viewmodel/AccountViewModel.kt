@@ -16,7 +16,6 @@ class AccountViewModel : ViewModel() {
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
 
-
     fun getUsersInfo() {
         _email.value = auth.currentUser?.email
     }

@@ -44,15 +44,46 @@ class ChatViewModel : ViewModel() {
     private val _message = MutableLiveData("")
     val message: LiveData<String> = _message
 
-    private var _messages = MutableLiveData(emptyList<Map<String, Any>>().toMutableList())
-    val messages: LiveData<MutableList<Map<String, Any>>> = _messages
-
     /**
      * Update the message value as user types
      */
     fun updateMessage(message: String) {
         _message.value = message
     }
+
+    private val _repliableMessageText = MutableLiveData("")
+    val repliableMessageText: LiveData<String> = _repliableMessageText
+
+    /**
+     * Update the repliable message value when user replies
+     */
+    fun updateRepliableMessageText(repliableMessageUpdate: String) {
+        _repliableMessageText.value = repliableMessageUpdate
+    }
+
+    private val _repliableMessageId = MutableLiveData("")
+    val repliableMessageId: LiveData<String> = _repliableMessageId
+
+    /**
+     * Update the repliable message id when user replies
+     */
+    fun updateRepliableMessageId(repliableMessageUpdate: String) {
+        _repliableMessageId.value = repliableMessageUpdate
+    }
+
+    private val _showRepliableMessage = MutableLiveData(false)
+    val showRepliableMessage: LiveData<Boolean> = _showRepliableMessage
+
+    /**
+     * Show the repliable message when user replies
+     */
+    fun updateShowRepliableMessage(boolean: Boolean) {
+        _showRepliableMessage.value = boolean
+    }
+
+    private var _messages = MutableLiveData(emptyList<Map<String, Any>>().toMutableList())
+    val messages: LiveData<MutableList<Map<String, Any>>> = _messages
+
 
     /**
      * Send message
@@ -63,15 +94,23 @@ class ChatViewModel : ViewModel() {
                 val message: String =
                     _message.value ?: throw IllegalArgumentException("message empty")
                 if (message.isNotEmpty()) {
-                    Firebase.firestore.collection(Constants.MESSAGES).document().set(
+                    val firestoreDocument = Firebase.firestore.collection(Constants.MESSAGES).document()
+                    firestoreDocument.set(
                         hashMapOf(
+                            Constants.MESSAGE_ID to firestoreDocument.id,
                             Constants.MESSAGE to message,
                             Constants.SENT_BY to firebaseDatasource.currentUserUid(),
                             Constants.USER_EMAIL to auth.currentUser!!.email,
-                            Constants.SENT_ON to System.currentTimeMillis()
+                            Constants.SENT_ON to System.currentTimeMillis(),
+                            Constants.REPLY_TO_ID to if (_repliableMessageId.value == "") Constants.ALL
+                            else _repliableMessageId.value,
+                            Constants.REPLY_TO_TEXT to if (_repliableMessageText.value == "") Constants.ALL
+                            else _repliableMessageText.value
                         )
                     ).addOnSuccessListener {
                         _message.value = ""
+                        updateRepliableMessageText("")
+                        updateShowRepliableMessage(false)
                     }
                 }
             } else {
@@ -87,8 +126,7 @@ class ChatViewModel : ViewModel() {
      * Get the messages
      */
     private fun getMessages() {
-        Firebase.firestore.collection(Constants.MESSAGES)
-            .orderBy(Constants.SENT_ON)
+        Firebase.firestore.collection(Constants.MESSAGES).orderBy(Constants.SENT_ON)
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     Log.w(Constants.TAG, "Listen failed.", e)
@@ -97,6 +135,7 @@ class ChatViewModel : ViewModel() {
                 val list = emptyList<Map<String, Any>>().toMutableList()
                 if (value != null) {
                     for (doc in value) {
+                        println(doc.id)
                         val data = doc.data
                         data[Constants.IS_CURRENT_USER] =
                             auth.currentUser?.uid.toString() == data[Constants.SENT_BY].toString()
