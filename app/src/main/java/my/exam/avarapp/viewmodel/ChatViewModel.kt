@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import my.exam.avarapp.ShowToast
 import my.exam.avarapp.model.Constants
 import my.exam.avarapp.repository.FirebaseDatasource
+import my.exam.avarapp.ui.chat.ScrollToMessage
 
 class ChatViewModel : ViewModel() {
     private var firebaseDatasource: FirebaseDatasource = FirebaseDatasource()
@@ -88,7 +89,7 @@ class ChatViewModel : ViewModel() {
     /**
      * Send message
      */
-    fun addMessage(showToast: ShowToast) {
+    fun addMessage(showToast: ShowToast, scrollToMessage: ScrollToMessage) {
         if (checkUserExists()) {
             if (currentUserIsVerifiedState.value) {
                 val message: String =
@@ -112,6 +113,9 @@ class ChatViewModel : ViewModel() {
                         updateRepliableMessageText("")
                         updateRepliableMessageId("")
                         updateShowRepliableMessage(false)
+                        scrollToMessage.scroll(0)
+                    }.addOnFailureListener{
+                        showToast.show("Не удалось отправить сообщение")
                     }
                 }
             } else {
@@ -136,7 +140,6 @@ class ChatViewModel : ViewModel() {
                 val list = emptyList<Map<String, Any>>().toMutableList()
                 if (value != null) {
                     for (doc in value) {
-                        println(doc.id)
                         val data = doc.data
                         data[Constants.IS_CURRENT_USER] =
                             auth.currentUser?.uid.toString() == data[Constants.SENT_BY].toString()

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import my.exam.avarapp.R
 import my.exam.avarapp.model.Constants
+import my.exam.avarapp.model.MessageEntity
 import my.exam.avarapp.ui.theme.RedMain
 import kotlin.math.roundToInt
 
@@ -86,10 +87,11 @@ fun DraggableItem(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DrawerMotionSwipe(
-    message: Map<String, Any>,
+    messageEntity: MessageEntity,
     updateRepliableMessageId: UpdateRepliableMessageId,
     updateRepliableMessageText: UpdateRepliableMessageText,
-    showRepliableMessage: ShowRepliableMessage
+    showRepliableMessage: ShowRepliableMessage,
+    scrollToMessage: ScrollToMessage
 ) {
     val density = LocalDensity.current
     val defaultActionSize = 40.dp
@@ -111,7 +113,7 @@ fun DrawerMotionSwipe(
 
     DraggableItem(
         state = state,
-        content = { SingleMessage(message) },
+        content = { SingleMessage(messageEntity, scrollToMessage) },
         startAction = {
             Box(
                 modifier = Modifier
@@ -130,13 +132,13 @@ fun DrawerMotionSwipe(
                             )
                         },
                     state,
-                    message,
+                    messageEntity.message,
                     updateRepliableMessageId,
                     updateRepliableMessageText,
                     showRepliableMessage
                 )
             }
-        }
+        },
     )
 }
 

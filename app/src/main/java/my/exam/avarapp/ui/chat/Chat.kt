@@ -1,6 +1,7 @@
 package my.exam.avarapp.ui.chat
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -29,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,8 +39,10 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import my.exam.avarapp.ShowToast
 import my.exam.avarapp.model.Constants
+import my.exam.avarapp.model.MessageEntity
 import my.exam.avarapp.viewmodel.ChatViewModel
 
 @Composable
@@ -51,6 +56,9 @@ fun Chat(
     val messages: List<Map<String, Any>> by chatViewModel.messages.observeAsState(
         initial = emptyList<Map<String, Any>>().toMutableList()
     )
+    val chatListState = rememberLazyListState()
+    // Remember a CoroutineScope to be able to launch
+    val chatCoroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -60,12 +68,17 @@ fun Chat(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(weight = 0.85f, fill = true),
+            state = chatListState,
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             reverseLayout = true
         ) {
-            items(messages) { message ->
-                DrawerMotionSwipe(message, object : UpdateRepliableMessageId {
+            items(messages) { messageItem ->
+                val messageEntity = MessageEntity(
+                    scrollToMessageIndex = messages.indexOf(messages.find { it[Constants.MESSAGE_ID] == messageItem[Constants.REPLY_TO_ID] }),
+                    message = messageItem
+                )
+                DrawerMotionSwipe(messageEntity, object : UpdateRepliableMessageId {
                     override fun update(messageId: String) {
                         chatViewModel.updateRepliableMessageId(messageId)
                     }
@@ -77,7 +90,15 @@ fun Chat(
                     override fun show(boolean: Boolean) {
                         chatViewModel.updateShowRepliableMessage(boolean)
                     }
-                })
+                },
+                    object : ScrollToMessage {
+                        override fun scroll(scrollToMessageIndex: Int) {
+                            chatCoroutineScope.launch {
+                                chatListState.animateScrollToItem(scrollToMessageIndex)
+                            }
+                        }
+                    }
+                )
             }
         }
         //make text selectable
@@ -131,7 +152,13 @@ fun Chat(
                         .fillMaxWidth(),
                     trailingIcon = {
                         IconButton(onClick = {
-                            chatViewModel.addMessage(showToast)
+                            chatViewModel.addMessage(showToast, object : ScrollToMessage {
+                                override fun scroll(scrollToMessageIndex: Int) {
+                                    chatCoroutineScope.launch {
+                                        chatListState.scrollToItem(scrollToMessageIndex)
+                                    }
+                                }
+                            })
                         }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.Send,
@@ -145,8 +172,11 @@ fun Chat(
 }
 
 @Composable
-fun SingleMessage(message: Map<String, Any>) {
-    val isCurrentUser = message[Constants.IS_CURRENT_USER] as Boolean
+fun SingleMessage(
+    messageEntity: MessageEntity,
+    scrollToMessage: ScrollToMessage
+) {
+    val isCurrentUser = messageEntity.message[Constants.IS_CURRENT_USER] as Boolean
     Box(
         modifier = Modifier
             .fillMaxWidth(),
@@ -162,14 +192,16 @@ fun SingleMessage(message: Map<String, Any>) {
             backgroundColor = if (isCurrentUser) MaterialTheme.colors.onBackground
             else Color.White,
         ) {
-            Column(Modifier.border(
-                width = 1.dp,
-                MaterialTheme.colors.secondaryVariant,
-                shape = RectangleShape
-            )) {
-                if (message[Constants.REPLY_TO_ID] != Constants.ALL) {
+            Column(
+                Modifier.border(
+                    width = 1.dp,
+                    MaterialTheme.colors.secondaryVariant,
+                    shape = RectangleShape
+                )
+            ) {
+                if (messageEntity.message[Constants.REPLY_TO_ID] != Constants.ALL) {
                     OutlinedTextField(
-                        value = message[Constants.REPLY_TO_TEXT].toString(),
+                        value = messageEntity.message[Constants.REPLY_TO_TEXT].toString(),
                         modifier = Modifier
                             .padding(start = 10.dp, top = 10.dp, end = 10.dp)
                             .wrapContentWidth()
@@ -178,6 +210,9 @@ fun SingleMessage(message: Map<String, Any>) {
                                 MaterialTheme.colors.onBackground,
                                 shape = RectangleShape
                             )
+                            .clickable {
+                                scrollToMessage.scroll(messageEntity.scrollToMessageIndex)
+                            }
                             .align(if (isCurrentUser) Alignment.End else Alignment.Start),
                         enabled = false,
                         maxLines = 1,
@@ -189,7 +224,7 @@ fun SingleMessage(message: Map<String, Any>) {
                     )
                 }
                 Text(
-                    text = message[Constants.USER_EMAIL].toString(),
+                    text = messageEntity.message[Constants.USER_EMAIL].toString(),
                     color = MaterialTheme.colors.secondary,
                     modifier = Modifier
                         .wrapContentWidth()
@@ -200,7 +235,7 @@ fun SingleMessage(message: Map<String, Any>) {
                     fontSize = 10.sp,
                 )
                 Text(
-                    text = message[Constants.MESSAGE].toString(),
+                    text = messageEntity.message[Constants.MESSAGE].toString(),
                     modifier = Modifier
                         .wrapContentWidth()
                         .padding(10.dp),
@@ -222,4 +257,8 @@ interface UpdateRepliableMessageId {
 
 interface ShowRepliableMessage {
     fun show(boolean: Boolean)
+}
+
+interface ScrollToMessage {
+    fun scroll(scrollToMessageIndex: Int)
 }
