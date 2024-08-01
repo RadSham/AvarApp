@@ -110,6 +110,7 @@ class ChatViewModel : ViewModel() {
                     ).addOnSuccessListener {
                         _message.value = ""
                         updateRepliableMessageText("")
+                        updateRepliableMessageId("")
                         updateShowRepliableMessage(false)
                     }
                 }

@@ -105,6 +105,7 @@ fun Chat(
                     trailingIcon = {
                         IconButton(onClick = {
                             chatViewModel.updateRepliableMessageText("")
+                            chatViewModel.updateRepliableMessageId("")
                             chatViewModel.updateShowRepliableMessage(false)
                         }) {
                             Icon(
