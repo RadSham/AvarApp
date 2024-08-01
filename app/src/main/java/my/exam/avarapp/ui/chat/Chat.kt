@@ -1,11 +1,14 @@
 package my.exam.avarapp.ui.chat
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,6 +47,8 @@ import my.exam.avarapp.ShowToast
 import my.exam.avarapp.model.Constants
 import my.exam.avarapp.model.MessageEntity
 import my.exam.avarapp.viewmodel.ChatViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
 
 @Composable
 fun Chat(
@@ -171,6 +176,7 @@ fun Chat(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SingleMessage(
     messageEntity: MessageEntity,
@@ -183,6 +189,10 @@ fun SingleMessage(
         contentAlignment = if (isCurrentUser) Alignment.CenterEnd else Alignment.CenterStart
     ) {
         Card(
+            modifier = Modifier.padding(
+                start = if (isCurrentUser) 40.dp else 0.dp,
+                end = if (isCurrentUser) 0.dp else 40.dp
+            ),
             shape = RoundedCornerShape(
                 topStart = 48f,
                 topEnd = 48f,
@@ -213,7 +223,8 @@ fun SingleMessage(
                             .clickable {
                                 scrollToMessage.scroll(messageEntity.scrollToMessageIndex)
                             }
-                            .align(if (isCurrentUser) Alignment.End else Alignment.Start),
+                            .align(if (isCurrentUser) Alignment.End else Alignment.Start)
+                            .defaultMinSize(minWidth = 100.dp),
                         enabled = false,
                         maxLines = 1,
                         onValueChange = {},
@@ -227,10 +238,8 @@ fun SingleMessage(
                     text = messageEntity.message[Constants.USER_EMAIL].toString(),
                     color = MaterialTheme.colors.secondary,
                     modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(
-                            start = 10.dp, top = 10.dp, end = 10.dp
-                        ),
+//                            .wrapContentWidth()
+                        .padding(start = 10.dp,top = 8.dp, bottom = 5.dp, end = 10.dp),
                     textAlign = if (isCurrentUser) TextAlign.End else TextAlign.Start,
                     fontSize = 10.sp,
                 )
@@ -238,13 +247,32 @@ fun SingleMessage(
                     text = messageEntity.message[Constants.MESSAGE].toString(),
                     modifier = Modifier
                         .wrapContentWidth()
-                        .padding(10.dp),
+                        .padding(start = 10.dp, end = 10.dp),
                     textAlign = TextAlign.Start,
                     color = if (!isCurrentUser) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onPrimary
+                )
+                Text(
+                    text = formatMilliseconds(
+                        messageEntity.message[Constants.SENT_ON].toString().toLong()
+                    ),
+                    color = MaterialTheme.colors.primaryVariant,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .padding(
+                            start = 8.dp, top = 5.dp, bottom = 8.dp, end = 8.dp
+                        )
+                        .align(Alignment.End),
+                    textAlign = TextAlign.End,
+                    fontSize = 10.sp,
                 )
             }
         }
     }
+}
+
+fun formatMilliseconds(milliseconds: Long): String {
+    val format = SimpleDateFormat("HH:mm  dd.MM")
+    return format.format(Date(milliseconds))
 }
 
 interface UpdateRepliableMessageText {
