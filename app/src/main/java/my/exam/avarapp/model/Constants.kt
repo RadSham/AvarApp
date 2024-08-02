@@ -10,6 +10,7 @@ object Constants {
     const val IS_CURRENT_USER = "is_current_user"
     const val USER_EMAIL = "user_email"
     const val REPLY_TO_ID = "reply_to_id"
+    const val REPLY_TO_MAIL = "reply_to_MAIL"
     const val REPLY_TO_TEXT = "reply_to_text"
     const val ALL = "all"
 }

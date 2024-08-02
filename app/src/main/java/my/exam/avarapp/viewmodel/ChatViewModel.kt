@@ -58,12 +58,22 @@ class ChatViewModel : ViewModel() {
     /**
      * Update the repliable message value when user replies
      */
-    fun updateRepliableMessageText(repliableMessageUpdate: String) {
-        _repliableMessageText.value = repliableMessageUpdate
+    fun updateRepliableMessageText(repliableMessageTextUpdate: String) {
+        _repliableMessageText.value = repliableMessageTextUpdate
+    }
+
+    private val _repliableMessageMail = MutableLiveData("")
+    val repliableMessageMail: LiveData<String> = _repliableMessageMail
+
+    /**
+     * Update the repliable message mail when user replies
+     */
+    fun updateRepliableMessageMail(repliableMessageMailUpdate: String) {
+        _repliableMessageMail.value = repliableMessageMailUpdate
     }
 
     private val _repliableMessageId = MutableLiveData("")
-    val repliableMessageId: LiveData<String> = _repliableMessageId
+//    val repliableMessageId: LiveData<String> = _repliableMessageId
 
     /**
      * Update the repliable message id when user replies
@@ -95,7 +105,8 @@ class ChatViewModel : ViewModel() {
                 val message: String =
                     _message.value ?: throw IllegalArgumentException("message empty")
                 if (message.isNotEmpty()) {
-                    val firestoreDocument = Firebase.firestore.collection(Constants.MESSAGES).document()
+                    val firestoreDocument =
+                        Firebase.firestore.collection(Constants.MESSAGES).document()
                     firestoreDocument.set(
                         hashMapOf(
                             Constants.MESSAGE_ID to firestoreDocument.id,
@@ -105,6 +116,8 @@ class ChatViewModel : ViewModel() {
                             Constants.SENT_ON to System.currentTimeMillis(),
                             Constants.REPLY_TO_ID to if (_repliableMessageId.value == "") Constants.ALL
                             else _repliableMessageId.value,
+                            Constants.REPLY_TO_MAIL to if (_repliableMessageMail.value == "") Constants.ALL
+                            else _repliableMessageMail.value,
                             Constants.REPLY_TO_TEXT to if (_repliableMessageText.value == "") Constants.ALL
                             else _repliableMessageText.value
                         )
@@ -112,9 +125,10 @@ class ChatViewModel : ViewModel() {
                         _message.value = ""
                         updateRepliableMessageText("")
                         updateRepliableMessageId("")
+                        updateRepliableMessageMail("")
                         updateShowRepliableMessage(false)
                         scrollToMessage.scroll(0)
-                    }.addOnFailureListener{
+                    }.addOnFailureListener {
                         showToast.show("Не удалось отправить сообщение")
                     }
                 }
