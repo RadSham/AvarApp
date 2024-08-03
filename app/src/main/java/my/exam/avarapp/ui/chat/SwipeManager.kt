@@ -106,7 +106,7 @@ fun DrawerMotionSwipe(
                 DragAnchors.Start at startActionSizePx
                 DragAnchors.End at endActionSizePx
             },
-            positionalThreshold = { distance: Float -> distance * 0.4f },
+            positionalThreshold = { distance: Float -> distance * 0.8f },
             velocityThreshold = { with(density) { 100.dp.toPx() } },
             animationSpec = tween()
         )
