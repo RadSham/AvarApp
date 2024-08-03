@@ -4,11 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import my.exam.avarapp.repository.FirebaseDatasource
 
 class AccountViewModel : ViewModel() {
-    private val auth: FirebaseAuth = Firebase.auth
+    private var firebaseDatasource: FirebaseDatasource = FirebaseDatasource()
+    private var auth: FirebaseAuth = firebaseDatasource.getFirebaseAuth()
+
+    private val _username = MutableLiveData("")
+    val username: LiveData<String> = _username
 
     private val _email = MutableLiveData("")
     val email: LiveData<String> = _email
@@ -18,6 +21,7 @@ class AccountViewModel : ViewModel() {
 
     fun getUsersInfo() {
         _email.value = auth.currentUser?.email
+        _username.value = auth.currentUser?.displayName
     }
 
     fun logOut() {

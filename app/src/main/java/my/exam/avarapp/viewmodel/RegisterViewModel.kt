@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import my.exam.avarapp.ShowToast
 import java.lang.IllegalArgumentException
@@ -15,6 +16,9 @@ import java.lang.IllegalArgumentException
 class RegisterViewModel : ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
 
+    private val _username = MutableLiveData("")
+    val username: LiveData<String> = _username
+
     private val _email = MutableLiveData("")
     val email: LiveData<String> = _email
 
@@ -23,6 +27,11 @@ class RegisterViewModel : ViewModel() {
 
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
+
+    // Update username
+    fun updateUsername(newUsername: String) {
+        _username.value = newUsername
+    }
 
     // Update email
     fun updateEmail(newEmail: String) {
@@ -47,8 +56,12 @@ class RegisterViewModel : ViewModel() {
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
                     auth.currentUser?.sendEmailVerification()
-                    showToast.show("Ссылка подтверждения отправлена на ${auth.currentUser?.email}")
-                    chat()
+                    auth.currentUser?.updateProfile(userProfileChangeRequest {
+                        displayName = username.value
+                    })?.addOnCompleteListener {
+                        showToast.show("Ссылка подтверждения отправлена на ${auth.currentUser?.email}")
+                        chat()
+                    }
                 } else {
                     showToast.show("Неудалось зарегистрировать пользователя")
                 }

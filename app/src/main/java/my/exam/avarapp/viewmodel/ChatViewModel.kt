@@ -62,14 +62,14 @@ class ChatViewModel : ViewModel() {
         _repliableMessageText.value = repliableMessageTextUpdate
     }
 
-    private val _repliableMessageMail = MutableLiveData("")
-    val repliableMessageMail: LiveData<String> = _repliableMessageMail
+    private val _repliableMessageUsername = MutableLiveData("")
+    val repliableMessageUsername: LiveData<String> = _repliableMessageUsername
 
     /**
      * Update the repliable message mail when user replies
      */
-    fun updateRepliableMessageMail(repliableMessageMailUpdate: String) {
-        _repliableMessageMail.value = repliableMessageMailUpdate
+    fun updateRepliableMessageUsername(repliableMessageUsernameUpdate: String) {
+        _repliableMessageUsername.value = repliableMessageUsernameUpdate
     }
 
     private val _repliableMessageId = MutableLiveData("")
@@ -113,11 +113,12 @@ class ChatViewModel : ViewModel() {
                             Constants.MESSAGE to message,
                             Constants.SENT_BY to firebaseDatasource.currentUserUid(),
                             Constants.USER_EMAIL to auth.currentUser!!.email,
+                            Constants.USER_NAME to auth.currentUser!!.displayName,
                             Constants.SENT_ON to System.currentTimeMillis(),
                             Constants.REPLY_TO_ID to if (_repliableMessageId.value == "") Constants.ALL
                             else _repliableMessageId.value,
-                            Constants.REPLY_TO_MAIL to if (_repliableMessageMail.value == "") Constants.ALL
-                            else _repliableMessageMail.value,
+                            Constants.REPLY_TO_USERNAME to if (_repliableMessageUsername.value == "") Constants.ALL
+                            else _repliableMessageUsername.value,
                             Constants.REPLY_TO_TEXT to if (_repliableMessageText.value == "") Constants.ALL
                             else _repliableMessageText.value
                         )
@@ -125,7 +126,7 @@ class ChatViewModel : ViewModel() {
                         _message.value = ""
                         updateRepliableMessageText("")
                         updateRepliableMessageId("")
-                        updateRepliableMessageMail("")
+                        updateRepliableMessageUsername("")
                         updateShowRepliableMessage(false)
                         scrollToMessage.scroll(0)
                     }.addOnFailureListener {

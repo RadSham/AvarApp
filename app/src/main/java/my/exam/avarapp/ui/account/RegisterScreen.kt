@@ -58,9 +58,11 @@ fun RegisterScreen(
     registerViewModel: RegisterViewModel = viewModel(),
     showToast: ShowToast
 ) {
+    val username: String by registerViewModel.username.observeAsState("")
     val email: String by registerViewModel.email.observeAsState("")
     val password: String by registerViewModel.password.observeAsState("")
     val loading: Boolean by registerViewModel.loading.observeAsState(initial = false)
+    var isErrorUsername by remember { mutableStateOf(false) }
     var isErrorEmail by remember { mutableStateOf(false) }
     var isErrorPassword by remember { mutableStateOf(false) }
 
@@ -91,6 +93,55 @@ fun RegisterScreen(
                 handleColor = MaterialTheme.colors.secondary,
                 backgroundColor = MaterialTheme.colors.secondary.copy(alpha = 0.4f)
             )
+            CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp, vertical = 5.dp)
+                        .fillMaxWidth(),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        cursorColor = MaterialTheme.colors.secondary,
+                        textColor = Color.Black,
+                        focusedBorderColor = MaterialTheme.colors.primaryVariant,
+                        unfocusedBorderColor = MaterialTheme.colors.secondaryVariant
+                    ),
+                    value = username,
+                    onValueChange = {
+                        registerViewModel.updateUsername(it)
+                        isErrorUsername = false
+                    },
+                    label = {
+                        Text(
+                            stringResource(id = R.string.username),
+                            color = MaterialTheme.colors.primaryVariant
+                        )
+                    },
+                    trailingIcon = {
+                        if (username.isNotEmpty()) {
+                            IconButton(onClick = { registerViewModel.updateUsername("") }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Close,
+                                    contentDescription = "ic_close",
+                                    tint = MaterialTheme.colors.secondary
+                                )
+                            }
+                        }
+                    },
+                    maxLines = 1,
+                    singleLine = true,
+                    visualTransformation = VisualTransformation.None,
+                    isError = isErrorUsername,
+                )
+                if (isErrorUsername) {
+                    Text(
+                        text = stringResource(id = R.string.invalid_username),
+                        color = MaterialTheme.colors.error,
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier
+                            .align(Alignment.Start)
+                            .padding(start = 20.dp, end = 20.dp)
+                    )
+                }
+            }
             CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
                 OutlinedTextField(
                     modifier = Modifier
@@ -198,6 +249,10 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(20.dp))
             fun checkDetails(): Boolean {
                 var isAllFilledInCorrectly = true
+                if (username.isEmpty()) {
+                    isErrorUsername = true
+                    isAllFilledInCorrectly = false
+                }
                 if (!emailValidator(email)) {
                     isErrorEmail = true
                     isAllFilledInCorrectly = false

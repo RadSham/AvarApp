@@ -79,7 +79,7 @@ fun SingleMessage(
                         enabled = false,
                         label = {
                             Text(
-                                messageEntity.message[Constants.REPLY_TO_MAIL].toString(),
+                                messageEntity.message[Constants.REPLY_TO_USERNAME].toString(),
                                 fontSize = 10.sp
                             )
                         },
@@ -92,7 +92,7 @@ fun SingleMessage(
                     )
                 }
                 Text(
-                    text = messageEntity.message[Constants.USER_EMAIL].toString(),
+                    text = messageEntity.message[Constants.USER_NAME].toString(),
                     color = MaterialTheme.colors.secondary,
                     modifier = Modifier
                         .padding(start = 10.dp, top = 8.dp, bottom = 5.dp, end = 10.dp),

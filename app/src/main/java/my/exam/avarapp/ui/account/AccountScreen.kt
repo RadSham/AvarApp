@@ -38,6 +38,7 @@ fun AccountScreen(
     back: () -> Unit,
     accountViewModel: AccountViewModel = viewModel()
 ) {
+    val username: String by accountViewModel.username.observeAsState("")
     val email: String by accountViewModel.email.observeAsState("")
     val loading: Boolean by accountViewModel.loading.observeAsState(initial = false)
     accountViewModel.getUsersInfo()
@@ -75,6 +76,7 @@ fun AccountScreen(
                 painter = painterResource(R.drawable.ic_avarapp_logo),
                 contentDescription = "ic_launcher_avarapp"
             )
+            Text(text = username, modifier = Modifier.padding(20.dp))
             Text(text = email, modifier = Modifier.padding(20.dp))
             Button(
                 onClick = {

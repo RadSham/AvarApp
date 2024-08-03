@@ -55,7 +55,7 @@ fun Chat(
 ) {
     val message: String by chatViewModel.message.observeAsState(initial = "")
     val repliableMessageText: String by chatViewModel.repliableMessageText.observeAsState(initial = "")
-    val repliableMessageMail: String by chatViewModel.repliableMessageMail.observeAsState(initial = "")
+    val repliableMessageMail: String by chatViewModel.repliableMessageUsername.observeAsState(initial = "")
     val showRepliableMessage: Boolean by chatViewModel.showRepliableMessage.observeAsState(initial = false)
     val messages: List<Map<String, Any>> by chatViewModel.messages.observeAsState(
         initial = emptyList<Map<String, Any>>().toMutableList()
@@ -86,9 +86,9 @@ fun Chat(
                             override fun update(messageId: String) {
                                 chatViewModel.updateRepliableMessageId(messageId)
                             }
-                        }, object : UpdateRepliableMessageMail {
-                            override fun update(messageMail: String) {
-                                chatViewModel.updateRepliableMessageMail(messageMail)
+                        }, object : UpdateRepliableMessageUsername {
+                            override fun update(messageUsername: String) {
+                                chatViewModel.updateRepliableMessageUsername(messageUsername)
                             }
                         }, object : UpdateRepliableMessageText {
                             override fun update(messageText: String) {
@@ -163,7 +163,7 @@ fun Chat(
                         IconButton(onClick = {
                             chatViewModel.updateRepliableMessageId("")
                             chatViewModel.updateRepliableMessageText("")
-                            chatViewModel.updateRepliableMessageMail("")
+                            chatViewModel.updateRepliableMessageUsername("")
                             chatViewModel.updateShowRepliableMessage(false)
                         }) {
                             Icon(
@@ -212,8 +212,8 @@ interface UpdateRepliableMessageText {
     fun update(messageText: String)
 }
 
-interface UpdateRepliableMessageMail {
-    fun update(messageMail: String)
+interface UpdateRepliableMessageUsername {
+    fun update(messageUsername: String)
 }
 
 interface UpdateRepliableMessageId {

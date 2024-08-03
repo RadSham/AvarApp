@@ -89,7 +89,7 @@ fun DraggableItem(
 fun DrawerMotionSwipe(
     messageEntity: MessageEntity,
     updateRepliableMessageId: UpdateRepliableMessageId,
-    updateRepliableMessageMail: UpdateRepliableMessageMail,
+    updateRepliableMessageUsername: UpdateRepliableMessageUsername,
     updateRepliableMessageText: UpdateRepliableMessageText,
     showRepliableMessage: ShowRepliableMessage,
     scrollToMessage: ScrollToMessage
@@ -135,7 +135,7 @@ fun DrawerMotionSwipe(
                     state,
                     messageEntity.message,
                     updateRepliableMessageId,
-                    updateRepliableMessageMail,
+                    updateRepliableMessageUsername,
                     updateRepliableMessageText,
                     showRepliableMessage
                 )
@@ -152,7 +152,7 @@ fun ReplySwipeBox(
     state: AnchoredDraggableState<DragAnchors>,
     message: Map<String, Any>,
     updateRepliableMessageId: UpdateRepliableMessageId,
-    updateRepliableMessageMail: UpdateRepliableMessageMail,
+    updateRepliableMessageUsername: UpdateRepliableMessageUsername,
     updateRepliableMessageText: UpdateRepliableMessageText,
     showRepliableMessage: ShowRepliableMessage
 ) {
@@ -172,7 +172,7 @@ fun ReplySwipeBox(
             state,
             message,
             updateRepliableMessageId,
-            updateRepliableMessageMail,
+            updateRepliableMessageUsername,
             updateRepliableMessageText,
             showRepliableMessage
         )
@@ -185,14 +185,14 @@ fun ReplyAction(
     state: AnchoredDraggableState<DragAnchors>,
     message: Map<String, Any>,
     updateRepliableMessageId: UpdateRepliableMessageId,
-    updateRepliableMessageMail: UpdateRepliableMessageMail,
+    updateRepliableMessageUsername: UpdateRepliableMessageUsername,
     updateRepliableMessageText: UpdateRepliableMessageText,
     showRepliableMessage: ShowRepliableMessage
 ) {
     LaunchedEffect(state.currentValue) {
         if (state.currentValue == DragAnchors.End) {
             updateRepliableMessageId.update(message[Constants.MESSAGE_ID].toString())
-            updateRepliableMessageMail.update(message[Constants.USER_EMAIL].toString())
+            updateRepliableMessageUsername.update(message[Constants.USER_NAME].toString())
             updateRepliableMessageText.update(message[Constants.MESSAGE].toString())
             showRepliableMessage.show(true)
             state.animateTo(DragAnchors.Start)
