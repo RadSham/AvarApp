@@ -7,13 +7,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import my.exam.avarapp.ShowToast
 import java.lang.IllegalArgumentException
+import javax.inject.Inject
 
 /**
  * View model for the login view.
  */
-class RegisterViewModel : ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor() : ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
 
     private val _username = MutableLiveData("")

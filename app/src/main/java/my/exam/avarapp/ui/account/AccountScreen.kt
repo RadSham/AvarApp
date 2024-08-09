@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import my.exam.avarapp.R
 import my.exam.avarapp.viewmodel.AccountViewModel
@@ -36,8 +37,8 @@ import my.exam.avarapp.viewmodel.AccountViewModel
 fun AccountScreen(
     chat: () -> Unit,
     back: () -> Unit,
-    accountViewModel: AccountViewModel = viewModel()
 ) {
+    val accountViewModel: AccountViewModel = hiltViewModel()
     val username: String by accountViewModel.username.observeAsState("")
     val email: String by accountViewModel.email.observeAsState("")
     val loading: Boolean by accountViewModel.loading.observeAsState(initial = false)

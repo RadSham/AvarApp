@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
 import my.exam.avarapp.repository.FirebaseDatasource
+import javax.inject.Inject
 
-class AccountViewModel : ViewModel() {
+@HiltViewModel
+class AccountViewModel @Inject constructor() : ViewModel() {
     private var firebaseDatasource: FirebaseDatasource = FirebaseDatasource()
     private var auth: FirebaseAuth = firebaseDatasource.getFirebaseAuth()
 

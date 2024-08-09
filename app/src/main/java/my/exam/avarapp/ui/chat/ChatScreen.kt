@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import my.exam.avarapp.R
 import my.exam.avarapp.ShowToast
@@ -28,9 +29,8 @@ fun ChatScreen(
     account: () -> Unit,
     paddingValues: PaddingValues,
     showToast: ShowToast,
-    chatViewModel: ChatViewModel = viewModel()
 ) {
-
+    val chatViewModel: ChatViewModel = hiltViewModel()
     Box(modifier = Modifier.padding(paddingValues)) {
         Scaffold(
             topBar = {

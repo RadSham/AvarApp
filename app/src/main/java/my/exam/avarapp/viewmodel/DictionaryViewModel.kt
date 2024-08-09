@@ -3,6 +3,7 @@ package my.exam.avarapp.viewmodel
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import my.exam.avarapp.model.WordEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +14,7 @@ import my.exam.avarapp.model.CategoryPhraseEntity
 import my.exam.avarapp.model.TutorialEntity
 import javax.inject.Inject
 
+@HiltViewModel
 class DictionaryViewModel @Inject constructor() : ViewModel() {
 
     private val loadWordsManager = LoadWordsManager()
@@ -27,7 +29,7 @@ class DictionaryViewModel @Inject constructor() : ViewModel() {
 
     fun loadLocalWords(dictionaryActivity: Activity) {
         viewModelScope.launch(Dispatchers.IO) {
-            launch {  loadWordsManager.getAllWords(dictionaryActivity) }.join()
+            launch { loadWordsManager.getAllWords(dictionaryActivity) }.join()
             loadWordsManager.listenForWordFlow()
                 .catch { _wStateFlow.value = Result.Error(it) }
                 .collect { _wStateFlow.emit(Result.Success(it)) }
@@ -36,7 +38,7 @@ class DictionaryViewModel @Inject constructor() : ViewModel() {
 
     fun loadLocalPhrases(dictionaryActivity: Activity) {
         viewModelScope.launch(Dispatchers.IO) {
-            launch {  loadPhrasesManager.getAllPhrases(dictionaryActivity) }.join()
+            launch { loadPhrasesManager.getAllPhrases(dictionaryActivity) }.join()
             loadPhrasesManager.listenForPhrasesFlow()
                 .catch { _pStateFlow.value = Result.Error(it) }
                 .collect { _pStateFlow.emit(Result.Success(it)) }
@@ -45,7 +47,7 @@ class DictionaryViewModel @Inject constructor() : ViewModel() {
 
     fun loadLocalTutorial(dictionaryActivity: Activity) {
         viewModelScope.launch(Dispatchers.IO) {
-            launch {  loadTutorialManager.getAllTutorial(dictionaryActivity) }.join()
+            launch { loadTutorialManager.getAllTutorial(dictionaryActivity) }.join()
             loadTutorialManager.listenForTutorialFlow()
                 .catch { _tStateFlow.value = Result.Error(it) }
                 .collect { _tStateFlow.emit(Result.Success(it)) }

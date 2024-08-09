@@ -11,37 +11,36 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import my.exam.avarapp.di.DaggerDictionaryActivityComponent
-import my.exam.avarapp.di.DictionaryActivityComponent
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
+import my.exam.avarapp.model.CategoryPhraseEntity
+import my.exam.avarapp.model.TutorialEntity
 import my.exam.avarapp.model.WordEntity
+import my.exam.avarapp.navigation.NavigationSetup
 import my.exam.avarapp.ui.activity.BottomNavigationBar
 import my.exam.avarapp.ui.activity.ProcessBar
 import my.exam.avarapp.ui.theme.AvarAppTheme
 import my.exam.avarapp.ui.theme.RedMain
 import my.exam.avarapp.viewmodel.DictionaryViewModel
 import my.exam.avarapp.viewmodel.Result
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import my.exam.avarapp.model.CategoryPhraseEntity
-import my.exam.avarapp.model.TutorialEntity
-import my.exam.avarapp.navigation.NavigationSetup
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class DictionaryActivity : ComponentActivity() {
 
-    @Inject
+    /*@Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var dictionaryActivityComponent: DictionaryActivityComponent
+    private lateinit var dictionaryActivityComponent: DictionaryActivityComponent*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val applicationComponent = (application as App).applicationComponent
+        /*val applicationComponent = (application as App).applicationComponent
         dictionaryActivityComponent =
             DaggerDictionaryActivityComponent.factory().create(applicationComponent, this)
         dictionaryActivityComponent.inject(this)
         val dictionaryViewModel =
-            ViewModelProvider(this, viewModelFactory)[DictionaryViewModel::class.java]
+            ViewModelProvider(this, viewModelFactory)[DictionaryViewModel::class.java]*/
 
         setContent {
             AvarAppTheme {
@@ -52,6 +51,7 @@ class DictionaryActivity : ComponentActivity() {
                     remember { mutableStateOf(listOf()) }
                 val tutorialListState: MutableState<List<TutorialEntity>> =
                     remember { mutableStateOf(listOf()) }
+                val dictionaryViewModel: DictionaryViewModel = hiltViewModel()
                 LaunchedEffect(key1 = 1) {
                     dictionaryViewModel.loadLocalWords(this@DictionaryActivity)
                     dictionaryViewModel.wStateFlow.collect {
@@ -76,10 +76,8 @@ class DictionaryActivity : ComponentActivity() {
 //                                progressBarLoading.value = false
                             }
 
-                            is Result.Loading -> Log.d(
-                                "MyLog",
-                                it.toString()
-                            ) //progressBarLoading.value = true
+                            is Result.Loading -> Log.d("MyLog", it.toString())
+                            //progressBarLoading.value = true
                             is Result.Error -> Log.d("MyLog", it.toString())
                         }
                     }

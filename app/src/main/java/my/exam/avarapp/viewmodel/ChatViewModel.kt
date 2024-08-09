@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -16,8 +17,10 @@ import my.exam.avarapp.ShowToast
 import my.exam.avarapp.model.Constants
 import my.exam.avarapp.repository.FirebaseDatasource
 import my.exam.avarapp.ui.chat.ScrollToMessage
+import javax.inject.Inject
 
-class ChatViewModel : ViewModel() {
+@HiltViewModel
+class ChatViewModel @Inject constructor(): ViewModel() {
     private var firebaseDatasource: FirebaseDatasource = FirebaseDatasource()
     private var auth: FirebaseAuth = firebaseDatasource.getFirebaseAuth()
 

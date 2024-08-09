@@ -41,6 +41,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import my.exam.avarapp.R
 import my.exam.avarapp.ShowToast
@@ -55,9 +56,9 @@ import my.exam.avarapp.viewmodel.RegisterViewModel
 fun RegisterScreen(
     chat: () -> Unit,
     back: () -> Unit,
-    registerViewModel: RegisterViewModel = viewModel(),
     showToast: ShowToast
 ) {
+    val registerViewModel: RegisterViewModel = hiltViewModel()
     val username: String by registerViewModel.username.observeAsState("")
     val email: String by registerViewModel.email.observeAsState("")
     val password: String by registerViewModel.password.observeAsState("")

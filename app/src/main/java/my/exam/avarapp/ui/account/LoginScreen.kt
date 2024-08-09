@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import my.exam.avarapp.R
 import my.exam.avarapp.ShowToast
@@ -50,9 +51,9 @@ import my.exam.avarapp.viewmodel.LoginViewModel
 fun LoginScreen(
     chat: () -> Unit,
     back: () -> Unit,
-    loginViewModel: LoginViewModel = viewModel(),
     showToast: ShowToast
 ) {
+    val loginViewModel: LoginViewModel = hiltViewModel()
     val email: String by loginViewModel.email.observeAsState("")
     val password: String by loginViewModel.password.observeAsState("")
     val loading: Boolean by loginViewModel.loading.observeAsState(initial = false)

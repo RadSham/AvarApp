@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.gms)
+    alias(libs.plugins.dagger.hilt)
 }
 
 val keystorePropertiesFile = rootProject.file("/.gradle/keystore.properties")
@@ -76,6 +77,10 @@ dependencies {
     //Dagger2
     implementation (libs.dagger)
     ksp (libs.dagger.compiler)
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
     //Gson
     implementation (libs.gson)
     //Firebase
