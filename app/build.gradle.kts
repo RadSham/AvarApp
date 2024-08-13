@@ -87,4 +87,7 @@ dependencies {
     implementation (platform(libs.firebase.bom))
     implementation (libs.firebase.auth.ktx)
     implementation (libs.firebase.firestore.ktx)
+    //Retrofit
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
 }

@@ -44,8 +44,8 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import my.exam.avarapp.R
 import my.exam.avarapp.ShowToast
-import my.exam.avarapp.model.Constants
 import my.exam.avarapp.model.MessageEntity
+import my.exam.avarapp.model.MessageItem
 import my.exam.avarapp.viewmodel.ChatViewModel
 
 @Composable
@@ -55,10 +55,15 @@ fun Chat(
 ) {
     val message: String by chatViewModel.message.observeAsState(initial = "")
     val repliableMessageText: String by chatViewModel.repliableMessageText.observeAsState(initial = "")
-    val repliableMessageMail: String by chatViewModel.repliableMessageUsername.observeAsState(initial = "")
+    val repliableMessageMail: String by chatViewModel.repliableMessageUsername.observeAsState(
+        initial = ""
+    )
     val showRepliableMessage: Boolean by chatViewModel.showRepliableMessage.observeAsState(initial = false)
     val messages: List<Map<String, Any>> by chatViewModel.messages.observeAsState(
         initial = emptyList<Map<String, Any>>().toMutableList()
+    )
+    val chatMessages: List<MessageItem> by chatViewModel.chatMessage.observeAsState(
+        initial = emptyList<MessageItem>().toList()
     )
     val chatListState = rememberLazyListState()
     // Remember a CoroutineScope to be able to launch
@@ -76,10 +81,10 @@ fun Chat(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 reverseLayout = true
             ) {
-                items(messages) { messageItem ->
+                items(chatMessages) { messageItem ->
                     val messageEntity = MessageEntity(
-                        scrollToMessageIndex = messages.indexOf(messages.find { it[Constants.MESSAGE_ID] == messageItem[Constants.REPLY_TO_ID] }),
-                        message = messageItem
+                        scrollToMessageIndex = chatMessages.indexOf(chatMessages.find { it.id == messageItem.id }),
+                        messageItem = messageItem
                     )
                     DrawerMotionSwipe(messageEntity,
                         object : UpdateRepliableMessageId {
@@ -196,6 +201,7 @@ fun Chat(
                                     }
                                 }
                             })
+                            chatViewModel.getChatMessages()
                         }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.Send,

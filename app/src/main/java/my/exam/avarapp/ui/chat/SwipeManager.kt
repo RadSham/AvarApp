@@ -31,8 +31,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import my.exam.avarapp.R
-import my.exam.avarapp.model.Constants
 import my.exam.avarapp.model.MessageEntity
+import my.exam.avarapp.model.MessageItem
 import my.exam.avarapp.ui.theme.RedMain
 import kotlin.math.roundToInt
 
@@ -133,7 +133,7 @@ fun DrawerMotionSwipe(
                             )
                         },
                     state,
-                    messageEntity.message,
+                    messageEntity.messageItem,
                     updateRepliableMessageId,
                     updateRepliableMessageUsername,
                     updateRepliableMessageText,
@@ -150,7 +150,7 @@ fun DrawerMotionSwipe(
 fun ReplySwipeBox(
     modifier: Modifier,
     state: AnchoredDraggableState<DragAnchors>,
-    message: Map<String, Any>,
+    messageItem: MessageItem,
     updateRepliableMessageId: UpdateRepliableMessageId,
     updateRepliableMessageUsername: UpdateRepliableMessageUsername,
     updateRepliableMessageText: UpdateRepliableMessageText,
@@ -170,7 +170,7 @@ fun ReplySwipeBox(
         )
         ReplyAction(
             state,
-            message,
+            messageItem,
             updateRepliableMessageId,
             updateRepliableMessageUsername,
             updateRepliableMessageText,
@@ -183,7 +183,7 @@ fun ReplySwipeBox(
 @Composable
 fun ReplyAction(
     state: AnchoredDraggableState<DragAnchors>,
-    message: Map<String, Any>,
+    messageItem: MessageItem,
     updateRepliableMessageId: UpdateRepliableMessageId,
     updateRepliableMessageUsername: UpdateRepliableMessageUsername,
     updateRepliableMessageText: UpdateRepliableMessageText,
@@ -191,9 +191,9 @@ fun ReplyAction(
 ) {
     LaunchedEffect(state.currentValue) {
         if (state.currentValue == DragAnchors.End) {
-            updateRepliableMessageId.update(message[Constants.MESSAGE_ID].toString())
-            updateRepliableMessageUsername.update(message[Constants.USER_NAME].toString())
-            updateRepliableMessageText.update(message[Constants.MESSAGE].toString())
+            updateRepliableMessageId.update(messageItem.id.toString())
+            updateRepliableMessageUsername.update(messageItem.userName)
+            updateRepliableMessageText.update(messageItem.message)
             showRepliableMessage.show(true)
             state.animateTo(DragAnchors.Start)
         }

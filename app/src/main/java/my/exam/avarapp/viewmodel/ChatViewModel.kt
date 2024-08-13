@@ -15,12 +15,18 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import my.exam.avarapp.ShowToast
 import my.exam.avarapp.model.Constants
+import my.exam.avarapp.model.MessageItem
+import my.exam.avarapp.repository.ChatRepository
 import my.exam.avarapp.repository.FirebaseDatasource
+import my.exam.avarapp.repository.TokenRepository
 import my.exam.avarapp.ui.chat.ScrollToMessage
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(): ViewModel() {
+class ChatViewModel @Inject constructor(
+    val tokenRepository: TokenRepository,
+    val chatRepository: ChatRepository
+) : ViewModel() {
     private var firebaseDatasource: FirebaseDatasource = FirebaseDatasource()
     private var auth: FirebaseAuth = firebaseDatasource.getFirebaseAuth()
 
@@ -37,7 +43,8 @@ class ChatViewModel @Inject constructor(): ViewModel() {
     init {
         getCurrentUserVerified()
         firebaseDatasource.currentUserReload()
-        getMessages()
+//        getMessages()
+        getChatMessages()
     }
 
     fun checkUserExists(): Boolean {
@@ -98,6 +105,8 @@ class ChatViewModel @Inject constructor(): ViewModel() {
     private var _messages = MutableLiveData(emptyList<Map<String, Any>>().toMutableList())
     val messages: LiveData<MutableList<Map<String, Any>>> = _messages
 
+    private var _chatMessages = MutableLiveData(emptyList<MessageItem>().toList())
+    val chatMessage: LiveData<List<MessageItem>> = _chatMessages
 
     /**
      * Send message
@@ -112,7 +121,7 @@ class ChatViewModel @Inject constructor(): ViewModel() {
                         Firebase.firestore.collection(Constants.MESSAGES).document()
                     firestoreDocument.set(
                         hashMapOf(
-                            Constants.MESSAGE_ID to firestoreDocument.id,
+                            Constants.ID to firestoreDocument.id,
                             Constants.MESSAGE to message,
                             Constants.SENT_BY to firebaseDatasource.currentUserUid(),
                             Constants.USER_EMAIL to auth.currentUser!!.email,
@@ -173,5 +182,48 @@ class ChatViewModel @Inject constructor(): ViewModel() {
      */
     private fun updateMessages(list: MutableList<Map<String, Any>>) {
         _messages.value = list.asReversed()
+    }
+
+    //TODO: make secure store
+    fun getToken() {
+        viewModelScope.launch {
+            try {
+                val tokens = tokenRepository.getAccessTokens()
+                println(tokens)
+            } catch (_: Exception) {
+
+            }
+        }
+    }
+
+    fun getChatMessages() {
+        viewModelScope.launch {
+            val messageItems = mutableListOf<MessageItem>()
+            try {
+                val messageResponses = chatRepository.getChatMessages()
+                println(messageResponses)
+                messageResponses.forEach {
+                    val tempMsg = MessageItem(
+                        it.id,
+                        it.message,
+                        it.sentBy,
+                        it.userName,
+                        it.sentOn,
+                        it.replyToId,
+                        it.replyToText,
+                        it.replyToUsername,
+                        auth.currentUser?.uid.toString() == it.sentBy
+                    )
+                    messageItems.add(tempMsg)
+                }
+                updateChatMessages(messageItems)
+            } catch (e: Exception) {
+                println(e)
+            }
+        }
+    }
+
+    private fun updateChatMessages(chatMessagesList: List<MessageItem>) {
+        _chatMessages.value = chatMessagesList.asReversed()
     }
 }

@@ -33,7 +33,7 @@ fun SingleMessage(
     messageEntity: MessageEntity,
     scrollToMessage: ScrollToMessage
 ) {
-    val isCurrentUser = messageEntity.message[Constants.IS_CURRENT_USER] as Boolean
+    val isCurrentUser = messageEntity.messageItem.isCurrentUser
     Box(
         modifier = Modifier
             .fillMaxWidth(),
@@ -60,9 +60,9 @@ fun SingleMessage(
                     shape = RectangleShape
                 )
             ) {
-                if (messageEntity.message[Constants.REPLY_TO_ID] != Constants.ALL) {
+                if (messageEntity.messageItem.replyToId != Constants.ALL) {
                     TextField(
-                        value = messageEntity.message[Constants.REPLY_TO_TEXT].toString(),
+                        value = messageEntity.messageItem.replyToText,
                         modifier = Modifier
                             .padding(start = 10.dp, top = 10.dp, end = 10.dp)
                             .wrapContentWidth()
@@ -79,7 +79,7 @@ fun SingleMessage(
                         enabled = false,
                         label = {
                             Text(
-                                messageEntity.message[Constants.REPLY_TO_USERNAME].toString(),
+                                messageEntity.messageItem.replyToUsername,
                                 fontSize = 10.sp
                             )
                         },
@@ -92,7 +92,7 @@ fun SingleMessage(
                     )
                 }
                 Text(
-                    text = messageEntity.message[Constants.USER_NAME].toString(),
+                    text = messageEntity.messageItem.userName,
                     color = MaterialTheme.colors.secondary,
                     modifier = Modifier
                         .padding(start = 10.dp, top = 8.dp, bottom = 5.dp, end = 10.dp),
@@ -101,7 +101,7 @@ fun SingleMessage(
                     fontSize = 10.sp,
                 )
                 Text(
-                    text = messageEntity.message[Constants.MESSAGE].toString(),
+                    text = messageEntity.messageItem.message,
                     modifier = Modifier
                         .wrapContentWidth()
                         .padding(start = 10.dp, end = 10.dp),
@@ -110,7 +110,7 @@ fun SingleMessage(
                 )
                 Text(
                     text = formatMilliseconds(
-                        messageEntity.message[Constants.SENT_ON].toString().toLong()
+                        messageEntity.messageItem.sentOn
                     ),
                     color = MaterialTheme.colors.primaryVariant,
                     modifier = Modifier
