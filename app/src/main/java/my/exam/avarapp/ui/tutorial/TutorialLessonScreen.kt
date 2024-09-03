@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -24,8 +27,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,7 +55,7 @@ fun TutorialLessonScreen(
                     },
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(Icons.Filled.ArrowBack, "backIcon")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, "backIcon")
                         }
                     },
                     backgroundColor = MaterialTheme.colors.primary,
@@ -70,22 +74,30 @@ fun TutorialLessonScreen(
 fun TutorialLessonScreenTextAndTables(tutorialEntity: TutorialEntity) {
     val tablesStrings = tutorialEntity.tutorialtables.split("|||")
     val textsList = tutorialEntity.tutoriallesson.split("|table|")
-    Column(
-        modifier = Modifier
-            .padding(5.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        for (t in 0 until textsList.lastIndex) {
-            Text(
-                text = textsList[t].prependIndent("     "),
-                textAlign = TextAlign.Start
-            )
-            TutorialLessonScreenTable(tablesStrings[t])
+    val customTextSelectionColors = TextSelectionColors(
+        handleColor = MaterialTheme.colors.secondary,
+        backgroundColor = MaterialTheme.colors.secondary.copy(alpha = 0.4f)
+    )
+    CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
+        SelectionContainer {
+            Column(
+                modifier = Modifier
+                    .padding(5.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                for (t in 0 until textsList.lastIndex) {
+                    Text(
+                        text = textsList[t].prependIndent("     "),
+                        textAlign = TextAlign.Start
+                    )
+                    TutorialLessonScreenTable(tablesStrings[t])
+                }
+                Text(
+                    text = textsList[textsList.lastIndex].prependIndent("     "),
+                    textAlign = TextAlign.Start
+                )
+            }
         }
-        Text(
-            text = textsList[textsList.lastIndex].prependIndent("     "),
-            textAlign = TextAlign.Start
-        )
     }
 }
 

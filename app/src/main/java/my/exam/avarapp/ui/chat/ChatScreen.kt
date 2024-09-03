@@ -1,5 +1,6 @@
 package my.exam.avarapp.ui.chat
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import my.exam.avarapp.R
 import my.exam.avarapp.ShowToast
 import my.exam.avarapp.viewmodel.ChatViewModel
@@ -29,7 +29,12 @@ fun ChatScreen(
     account: () -> Unit,
     paddingValues: PaddingValues,
     showToast: ShowToast,
+    dictionary: () -> Unit,
 ) {
+    //handle back button to avoid navigation to duplicate screen
+    BackHandler {
+        dictionary()
+    }
     val chatViewModel: ChatViewModel = hiltViewModel()
     Box(modifier = Modifier.padding(paddingValues)) {
         Scaffold(

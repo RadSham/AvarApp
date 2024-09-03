@@ -42,10 +42,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import my.exam.avarapp.R
 import my.exam.avarapp.ShowToast
 import my.exam.avarapp.viewmodel.RegisterViewModel
+import java.util.Locale
 
 /**
  * The Register view which will be helpful for the user to register themselves into
@@ -133,14 +133,25 @@ fun RegisterScreen(
                     isError = isErrorUsername,
                 )
                 if (isErrorUsername) {
-                    Text(
-                        text = stringResource(id = R.string.invalid_username),
-                        color = MaterialTheme.colors.error,
-                        style = MaterialTheme.typography.caption,
-                        modifier = Modifier
-                            .align(Alignment.Start)
-                            .padding(start = 20.dp, end = 20.dp)
-                    )
+                    if (username.lowercase(Locale.ROOT).trim() == "radsham") {
+                        Text(
+                            text = stringResource(id = R.string.invalid_username_admin),
+                            color = MaterialTheme.colors.error,
+                            style = MaterialTheme.typography.caption,
+                            modifier = Modifier
+                                .align(Alignment.Start)
+                                .padding(start = 20.dp, end = 20.dp)
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(id = R.string.invalid_username),
+                            color = MaterialTheme.colors.error,
+                            style = MaterialTheme.typography.caption,
+                            modifier = Modifier
+                                .align(Alignment.Start)
+                                .padding(start = 20.dp, end = 20.dp)
+                        )
+                    }
                 }
             }
             CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
@@ -250,7 +261,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(20.dp))
             fun checkDetails(): Boolean {
                 var isAllFilledInCorrectly = true
-                if (username.isEmpty()) {
+                if (username.isEmpty() || username.lowercase(Locale.ROOT).trim() == "radsham") {
                     isErrorUsername = true
                     isAllFilledInCorrectly = false
                 }

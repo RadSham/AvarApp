@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.gms)
     alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.serialization)
 }
 
 val keystorePropertiesFile = rootProject.file("/.gradle/keystore.properties")
@@ -39,8 +40,12 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("release")
         }
     }
@@ -62,32 +67,45 @@ android {
 
 dependencies {
     // system bars customization
-    implementation (libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.systemuicontroller)
     // Compose
     implementation(platform(libs.androidx.compose.bom))
-    implementation (libs.androidx.navigation.compose)
-    implementation (libs.androidx.material)
-    implementation (libs.android.material)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material)
+    implementation(libs.android.material)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.core.ktx)
     //Tests
-    testImplementation (libs.junit)
-    androidTestImplementation (libs.androidx.junit)
-    androidTestImplementation (libs.androidx.espresso.core)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     //Dagger2
-    implementation (libs.dagger)
-    ksp (libs.dagger.compiler)
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
     //Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     //Gson
-    implementation (libs.gson)
+    implementation(libs.gson)
     //Firebase
-    implementation (platform(libs.firebase.bom))
-    implementation (libs.firebase.auth.ktx)
-    implementation (libs.firebase.firestore.ktx)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
     //Retrofit
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    //DataStore
+    implementation(libs.androidx.datastore.preferences)
+    //Websocket
+    implementation(libs.ktor.client.websocket)
+    implementation (libs.ktor.client.cio)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.logging)
+    implementation (libs.ktor.client.serialization)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    //Serialization
+    implementation (libs.kotlinx.serialization.json)
 }

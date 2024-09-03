@@ -1,6 +1,5 @@
 package my.exam.avarapp.repository
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -44,7 +43,7 @@ class FirebaseDatasource {
                     }
                 }
             } catch (e: Exception) {
-                Log.d("myLog", "Failed to reload user data ${e.message}")
+                e.printStackTrace()
             }
         }
         awaitClose { this.close() }

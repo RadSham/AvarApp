@@ -29,6 +29,7 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -41,6 +42,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import my.exam.avarapp.R
 import my.exam.avarapp.ShowToast
@@ -53,16 +55,18 @@ fun Chat(
     chatViewModel: ChatViewModel,
     showToast: ShowToast,
 ) {
+    LaunchedEffect(key1 = true) {
+        chatViewModel.toastEvent.collectLatest { message ->
+            showToast.show(message)
+        }
+    }
     val message: String by chatViewModel.message.observeAsState(initial = "")
     val repliableMessageText: String by chatViewModel.repliableMessageText.observeAsState(initial = "")
     val repliableMessageMail: String by chatViewModel.repliableMessageUsername.observeAsState(
         initial = ""
     )
     val showRepliableMessage: Boolean by chatViewModel.showRepliableMessage.observeAsState(initial = false)
-    val messages: List<Map<String, Any>> by chatViewModel.messages.observeAsState(
-        initial = emptyList<Map<String, Any>>().toMutableList()
-    )
-    val chatMessages: List<MessageItem> by chatViewModel.chatMessage.observeAsState(
+    val chatMessages: List<MessageItem> by chatViewModel.chatMessages.observeAsState(
         initial = emptyList<MessageItem>().toList()
     )
     val chatListState = rememberLazyListState()
@@ -83,7 +87,8 @@ fun Chat(
             ) {
                 items(chatMessages) { messageItem ->
                     val messageEntity = MessageEntity(
-                        scrollToMessageIndex = chatMessages.indexOf(chatMessages.find { it.id == messageItem.id }),
+                        scrollToMessageIndex = if (messageItem.replyToId != "all") chatMessages.indexOf(
+                            chatMessages.find { it.sentOn == messageItem.replyToId.toLong() }) else null,
                         messageItem = messageItem
                     )
                     DrawerMotionSwipe(messageEntity,
@@ -194,14 +199,13 @@ fun Chat(
                         .fillMaxWidth(),
                     trailingIcon = {
                         IconButton(onClick = {
-                            chatViewModel.addMessage(showToast, object : ScrollToMessage {
+                            chatViewModel.addChatMessage(showToast, object : ScrollToMessage {
                                 override fun scroll(scrollToMessageIndex: Int) {
                                     chatCoroutineScope.launch {
                                         chatListState.scrollToItem(scrollToMessageIndex)
                                     }
                                 }
                             })
-                            chatViewModel.getChatMessages()
                         }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.Send,

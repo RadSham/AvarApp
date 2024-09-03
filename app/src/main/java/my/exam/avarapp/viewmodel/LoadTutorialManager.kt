@@ -1,7 +1,6 @@
 package my.exam.avarapp.viewmodel
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +28,7 @@ class LoadTutorialManager {
         }
         //error when exception occurs
         catch (e: Exception) {
-            Log.d("MyLog", "getAllPhrases exception: $e")
+            e.printStackTrace()
         } finally {
             br?.close()
         }

@@ -1,7 +1,6 @@
 package my.exam.avarapp.model
 
 data class MessageItem(
-    var id: Long,
     var message: String,
     var sentBy: String,
     var userName: String,

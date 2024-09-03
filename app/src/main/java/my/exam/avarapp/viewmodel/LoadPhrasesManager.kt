@@ -29,7 +29,7 @@ class LoadPhrasesManager {
         }
         //error when exception occurs
         catch (e: Exception) {
-            Log.d("MyLog", "getAllPhrases exception: $e")
+            e.printStackTrace()
         } finally {
             br?.close()
         }

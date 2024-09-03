@@ -17,6 +17,7 @@
     <string name="enter">Вход</string>
     <string name="godekhan">ГодекIан</string>
     <string name="invalid_username">Некорректное имя. Имя не может быть пустым</string>
+    <string name="invalid_username_admin">Данное имя используется администратором. Просьба использовать другое имя</string>
     <string name="invalid_email">Некорректный email</string>
     <string name="invalid_password">Некорректный пароль. Пароль не может быть менее 6 символов</string>
 </resources>

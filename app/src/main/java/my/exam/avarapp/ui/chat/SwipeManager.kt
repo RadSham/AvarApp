@@ -191,7 +191,7 @@ fun ReplyAction(
 ) {
     LaunchedEffect(state.currentValue) {
         if (state.currentValue == DragAnchors.End) {
-            updateRepliableMessageId.update(messageItem.id.toString())
+            updateRepliableMessageId.update(messageItem.sentOn.toString())
             updateRepliableMessageUsername.update(messageItem.userName)
             updateRepliableMessageText.update(messageItem.message)
             showRepliableMessage.show(true)

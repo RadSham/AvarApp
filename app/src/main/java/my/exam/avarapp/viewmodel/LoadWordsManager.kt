@@ -30,7 +30,7 @@ class LoadWordsManager {
         }
         //error when exception occurs
         catch (e: Exception) {
-            Log.d("MyLog", "getAllWords exception: $e")
+            e.printStackTrace()
         } finally {
             br?.close()
         }

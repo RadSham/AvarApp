@@ -45,4 +45,12 @@ class Action(navController: NavHostController) {
     val authOptions: () -> Unit = { navController.navigate(NavScreen.AuthOptions.route) }
     val account: () -> Unit = { navController.navigate(NavScreen.Account.route) }
     val navigateBack: () -> Unit = { navController.popBackStack() }
+    //handle back button to avoid navigation to duplicate screen
+    val dictionary: () -> Unit = {
+        navController.navigate(NavScreen.Dictionary.route) {
+            popUpTo(NavScreen.Dictionary.route) {
+                inclusive = true
+            }
+        }
+    }
 }

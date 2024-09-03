@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import my.exam.avarapp.model.CategoryPhraseEntity
 import my.exam.avarapp.model.TutorialEntity
+import my.exam.avarapp.util.Result
 import javax.inject.Inject
 
 @HiltViewModel

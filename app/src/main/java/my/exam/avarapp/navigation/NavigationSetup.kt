@@ -55,12 +55,12 @@ fun NavigationSetup(
                 type = NavType.IntType
             }
             )
-        ) { backstackEntry ->
+        ) { navBackStackEntry ->
             TutorialLessonScreen(
                 navController,
                 paddingValues,
                 tutorialListState,
-                backstackEntry.arguments?.getInt("index")
+                navBackStackEntry.arguments?.getInt("index")
             )
         }
         composable(NavScreen.Chat.route) {
@@ -68,7 +68,8 @@ fun NavigationSetup(
                 authOptions = Action(navController).authOptions,
                 account = Action(navController).account,
                 paddingValues = paddingValues,
-                showToast = showToast
+                showToast = showToast,
+                dictionary = Action(navController).dictionary
             )
         }
         composable(NavScreen.AuthOptions.route) {
@@ -94,7 +95,10 @@ fun NavigationSetup(
             )
         }
         composable(NavScreen.Account.route) {
-            AccountScreen(chat = Action(navController).chat, Action(navController).navigateBack)
+            AccountScreen(
+                chat = Action(navController).chat,
+                back = Action(navController).navigateBack
+            )
         }
     }
 }

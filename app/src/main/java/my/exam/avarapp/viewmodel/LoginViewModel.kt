@@ -8,14 +8,15 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import my.exam.avarapp.ShowToast
-import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 /**
  * View model for the login view.
  */
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(
+//    private val userPreferences: UserPreferences
+) : ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
 
     private val _email = MutableLiveData("")
@@ -50,6 +51,14 @@ class LoginViewModel @Inject constructor() : ViewModel() {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
                     chat()
+                    /* viewModelScope.launch {
+                         try {
+                             val tokens = tokenRepository.getAccessTokens()
+                             userPreferences.saveAccessTokens(tokens[0].accessToken, null)
+                         } catch (e: Exception) {
+                             println(e)
+                         }
+                     }*/
                 } else {
                     showToast.show("Неверный логин или пароль")
                 }

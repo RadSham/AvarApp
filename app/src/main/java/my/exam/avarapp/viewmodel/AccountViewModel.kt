@@ -9,7 +9,8 @@ import my.exam.avarapp.repository.FirebaseDatasource
 import javax.inject.Inject
 
 @HiltViewModel
-class AccountViewModel @Inject constructor() : ViewModel() {
+class AccountViewModel @Inject constructor(/*var userPreferences: UserPreferences*/) : ViewModel() {
+
     private var firebaseDatasource: FirebaseDatasource = FirebaseDatasource()
     private var auth: FirebaseAuth = firebaseDatasource.getFirebaseAuth()
 
@@ -30,5 +31,9 @@ class AccountViewModel @Inject constructor() : ViewModel() {
     fun logOut() {
         auth.signOut()
         auth.currentUser?.reload()
+        //AccessToken
+        /*viewModelScope.launch {
+            userPreferences.clear()
+        }*/
     }
 }

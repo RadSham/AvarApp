@@ -4,9 +4,11 @@ agp = "8.5.1"
 converterGson = "2.9.0"
 dagger = "2.51.1"
 daggerCompiler = "2.51.1"
+datastorePreferences = "1.1.1"
 firebaseBom = "33.1.2"
 googleServices = "4.4.2"
 gson = "2.10.1"
+kotlinxSerializationJson = "1.3.0"
 ksp = "1.9.23-1.0.19"
 gms = "4.4.2"
 kotlin = "1.9.23"
@@ -15,17 +17,28 @@ hiltNavigationCompose = "1.2.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-composeBom = "2024.06.00"
+composeBom = "2024.08.00"
+ktor = "2.3.12"
+ktorClientContentNegotiation = "2.3.12"
+ktorClientWebsocket = "1.1.4"
+ktorSerializationKotlinxJson = "2.3.12"
 material = "1.12.0"
+mockitoCore = "5.12.0"
+mockitoKotlin = "5.4.0"
 navVersion = "2.7.7"
 kotlinComposeCompiler = "1.5.13"
 retrofit = "2.9.0"
 runtimeLivedata = "1.6.8"
+securityCrypto = "1.0.0"
+coreKtx = "1.6.1"
+serialization = "1.9.23"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navVersion" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
@@ -44,7 +57,18 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-material = { group = "androidx.compose.material", name = "material" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-client-websocket = { module = "io.ktor:ktor-client-websocket", version.ref = "ktorClientWebsocket" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientContentNegotiation" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+androidx-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -53,3 +77,4 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 gms = { id = "com.google.gms.google-services", version.ref = "gms" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }

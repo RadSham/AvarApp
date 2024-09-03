@@ -24,24 +24,13 @@ import my.exam.avarapp.ui.activity.ProcessBar
 import my.exam.avarapp.ui.theme.AvarAppTheme
 import my.exam.avarapp.ui.theme.RedMain
 import my.exam.avarapp.viewmodel.DictionaryViewModel
-import my.exam.avarapp.viewmodel.Result
+import my.exam.avarapp.util.Result
 
 @AndroidEntryPoint
 class DictionaryActivity : ComponentActivity() {
 
-    /*@Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var dictionaryActivityComponent: DictionaryActivityComponent*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        /*val applicationComponent = (application as App).applicationComponent
-        dictionaryActivityComponent =
-            DaggerDictionaryActivityComponent.factory().create(applicationComponent, this)
-        dictionaryActivityComponent.inject(this)
-        val dictionaryViewModel =
-            ViewModelProvider(this, viewModelFactory)[DictionaryViewModel::class.java]*/
-
         setContent {
             AvarAppTheme {
                 val progressBarLoading = remember { mutableStateOf(true) }
@@ -62,7 +51,7 @@ class DictionaryActivity : ComponentActivity() {
                             }
 
                             is Result.Loading -> progressBarLoading.value = true
-                            is Result.Error -> Log.d("MyLog", it.toString())
+                            is Result.Error -> it.error.printStackTrace()
                         }
                     }
                 }
@@ -78,7 +67,7 @@ class DictionaryActivity : ComponentActivity() {
 
                             is Result.Loading -> Log.d("MyLog", it.toString())
                             //progressBarLoading.value = true
-                            is Result.Error -> Log.d("MyLog", it.toString())
+                            is Result.Error -> it.error.printStackTrace()
                         }
                     }
                 }
@@ -92,11 +81,9 @@ class DictionaryActivity : ComponentActivity() {
 //                                progressBarLoading.value = false
                             }
 
-                            is Result.Loading -> Log.d(
-                                "MyLog",
-                                it.toString()
-                            ) //progressBarLoading.value = true
-                            is Result.Error -> Log.d("MyLog", it.toString())
+                            is Result.Loading -> Log.d("MyLog", it.toString())
+                            //progressBarLoading.value = true
+                            is Result.Error -> it.error.printStackTrace()
                         }
                     }
                 }

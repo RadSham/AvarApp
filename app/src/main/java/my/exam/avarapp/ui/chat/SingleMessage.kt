@@ -27,6 +27,7 @@ import my.exam.avarapp.model.Constants
 import my.exam.avarapp.model.MessageEntity
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 @Composable
 fun SingleMessage(
@@ -72,7 +73,7 @@ fun SingleMessage(
                                 shape = RectangleShape
                             )
                             .clickable {
-                                scrollToMessage.scroll(messageEntity.scrollToMessageIndex)
+                                scrollToMessage.scroll(messageEntity.scrollToMessageIndex!!)
                             }
                             .align(if (isCurrentUser) Alignment.End else Alignment.Start)
                             .defaultMinSize(minWidth = 100.dp),
@@ -128,6 +129,6 @@ fun SingleMessage(
 }
 
 fun formatMilliseconds(milliseconds: Long): String {
-    val format = SimpleDateFormat("dd/MM HH:mm")
+    val format = SimpleDateFormat("dd/MM HH:mm", Locale.getDefault())
     return format.format(Date(milliseconds))
 }
