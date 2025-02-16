@@ -32,8 +32,8 @@ android {
         applicationId = "my.exam.avarapp"
         minSdk = 23
         targetSdk = 34
-        versionCode = 9
-        versionName = "1.6.3"
+        versionCode = 10
+        versionName = "1.6.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
