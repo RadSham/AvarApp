@@ -1,5 +1,6 @@
 package my.exam.avarapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -110,7 +111,8 @@ class ChatViewModel @Inject constructor(
     private val _toastEvent = MutableSharedFlow<String>()
     val toastEvent = _toastEvent.asSharedFlow()
 
-    private fun connectToChat() {
+    fun connectToChat() {
+        Log.d("GoogleIO", "connectToChat()")
         getAllMessages()
         viewModelScope.launch {
             //close guest session

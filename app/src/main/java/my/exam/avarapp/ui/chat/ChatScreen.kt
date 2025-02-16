@@ -1,5 +1,6 @@
 package my.exam.avarapp.ui.chat
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,6 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.LifecycleStartEffect
 import my.exam.avarapp.R
 import my.exam.avarapp.ShowToast
 import my.exam.avarapp.viewmodel.ChatViewModel
@@ -64,6 +67,19 @@ fun ChatScreen(
             Box(modifier = Modifier.padding(paddingValues)) {
                 Chat(chatViewModel, showToast)
             }
+        }
+    }
+    LifecycleStartEffect(Unit) {
+        Log.d("GoogleIO", "OnStart: Effect")
+        onStopOrDispose {
+            Log.d("GoogleIO", "OnStopOrDispose: Effect")
+        }
+    }
+    LifecycleResumeEffect(Unit) {
+        Log.d("GoogleIO", "OnResume: Effect")
+        chatViewModel.connectToChat()
+        onPauseOrDispose {
+            Log.d("GoogleIO", "OnPauseOrDispose: Effect")
         }
     }
 }

@@ -32,16 +32,15 @@ android {
         applicationId = "my.exam.avarapp"
         minSdk = 23
         targetSdk = 34
-        versionCode = 7
-        versionName = "1.6"
+        versionCode = 9
+        versionName = "1.6.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -75,6 +74,9 @@ dependencies {
     implementation(libs.android.material)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.core.ktx)
+    // Lifecycle utilities for Compose
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
     //Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

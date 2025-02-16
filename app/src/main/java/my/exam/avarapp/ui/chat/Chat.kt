@@ -72,7 +72,18 @@ fun Chat(
     val chatListState = rememberLazyListState()
     // Remember a CoroutineScope to be able to launch
     val chatCoroutineScope = rememberCoroutineScope()
-
+/*    LifecycleStartEffect(Unit) {
+        Log.d("GoogleIO","OnStart: Effect")
+        onStopOrDispose {
+            Log.d("GoogleIO","OnStopOrDispose: Effect")
+        }
+    }
+    LifecycleResumeEffect(Unit) {
+        Log.d("GoogleIO","OnResume: Effect")
+        onPauseOrDispose {
+            Log.d("GoogleIO","OnPauseOrDispose: Effect")
+        }
+    }*/
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
