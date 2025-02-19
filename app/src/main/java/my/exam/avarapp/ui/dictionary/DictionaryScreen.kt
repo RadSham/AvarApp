@@ -25,13 +25,14 @@ fun DictionaryScreen(
         stringResource(id = R.string.eng_lang),
         stringResource(id = R.string.tr_lang)
     )
-    val selectedIndex = remember { mutableIntStateOf(0) }
+    val selectedIndexFirst = remember { mutableIntStateOf(0) }
+    val selectedIndexSecond = remember { mutableIntStateOf(1) }
 
     Column(modifier = Modifier.padding(padding)) {
         LanguageChooser(
-            selectedIndex, languages
+            selectedIndexFirst, selectedIndexSecond,languages
         )
         SearchView(query)
-        WordsList(query, wordsListState, languages[selectedIndex.intValue])
+        WordsList(query, wordsListState, languages[selectedIndexFirst.intValue])
     }
 }
