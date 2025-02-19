@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LanguageChooser(
-    selectedIndexFirst: MutableState<Int>,
-    selectedIndexSecond: MutableState<Int>,
+    selectedLanguageFirst: MutableState<String>,
+    selectedLanguageSecond: MutableState<String>,
     languagesList: List<String>
 ) {
     val languagesStateListSecond = remember {
@@ -46,7 +46,7 @@ fun LanguageChooser(
                     color = MaterialTheme.colors.secondary
                 ),
                 readOnly = true,
-                value = languagesList[selectedIndexFirst.value],
+                value = selectedLanguageFirst.value,
                 onValueChange = { },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value) },
                 colors = ExposedDropdownMenuDefaults.textFieldColors(
@@ -63,10 +63,12 @@ fun LanguageChooser(
             ) {
                 languagesList.forEachIndexed { index, s ->
                     DropdownMenuItem(onClick = {
-                        selectedIndexFirst.value = index
+                        selectedLanguageFirst.value = languagesList[index]
                         languagesStateListSecond.clear()
                         languagesStateListSecond.addAll(languagesList)
-                        languagesStateListSecond.remove(languagesList[selectedIndexFirst.value])
+                        languagesStateListSecond.remove(selectedLanguageFirst.value)
+                        if (selectedLanguageSecond.value.equals(selectedLanguageFirst.value))
+                            selectedLanguageSecond.value = languagesStateListSecond.first()
                         expanded.value = false
                     }) {
                         Text(text = s)
@@ -89,7 +91,7 @@ fun LanguageChooser(
                     color = MaterialTheme.colors.secondary
                 ),
                 readOnly = true,
-                value = languagesStateListSecond[selectedIndexSecond.value],
+                value = selectedLanguageSecond.value,
                 onValueChange = { },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded2.value) },
                 colors = ExposedDropdownMenuDefaults.textFieldColors(
@@ -106,7 +108,7 @@ fun LanguageChooser(
             ) {
                 languagesStateListSecond.forEachIndexed { index, s ->
                     DropdownMenuItem(onClick = {
-                        selectedIndexSecond.value = index
+                        selectedLanguageSecond.value = languagesStateListSecond[index]
                         expanded2.value = false
                     }) {
                         Text(text = s)

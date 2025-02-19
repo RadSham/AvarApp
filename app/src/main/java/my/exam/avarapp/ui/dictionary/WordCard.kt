@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,21 +20,20 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import my.exam.avarapp.R
 import my.exam.avarapp.model.WordEntity
 
 @Composable
-fun WordCard(word: WordEntity, language: String) {
+fun WordCard(word: WordEntity, languageFisrt: String, languageSecond: String) {
     val openWordDialog = remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(2.dp)
+            .padding(5.dp)
             .shadow(
-                2.dp,
+                3.dp,
                 ambientColor = MaterialTheme.colors.secondary,
                 spotColor = MaterialTheme.colors.secondary
             ),
@@ -59,28 +56,40 @@ fun WordCard(word: WordEntity, language: String) {
                     .border(
                         width = 1.dp,
                         color = MaterialTheme.colors.secondaryVariant,
-                        shape = RoundedCornerShape(2.dp)
+                        shape = RoundedCornerShape(5.dp)
                     )
-                    .padding(3.dp)
+                    .padding(10.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = word.avname,
-                        fontWeight = if (language == stringResource(id = R.string.avar_lang)) FontWeight.Bold else FontWeight.Normal,
+                        text = when (languageFisrt) {
+                            stringResource(id = R.string.avar_lang) -> word.avname
+                            stringResource(id = R.string.rus_lang) -> word.rusname
+                            stringResource(id = R.string.eng_lang) -> word.enname
+                            stringResource(id = R.string.tr_lang) -> word.trname
+                            else -> {word.avname}
+                        },
+                        fontWeight = FontWeight.Bold ,
                         textAlign = TextAlign.Start,
                         modifier = Modifier.weight(1f)
                     )
                     Text(
-                        text = word.rusname,
-                        fontWeight = if (language == stringResource(id = R.string.rus_lang)) FontWeight.Bold else FontWeight.Normal,
+                        text = when (languageSecond) {
+                            stringResource(id = R.string.avar_lang) -> word.avname
+                            stringResource(id = R.string.rus_lang) -> word.rusname
+                            stringResource(id = R.string.eng_lang) -> word.enname
+                            stringResource(id = R.string.tr_lang) -> word.trname
+                            else -> {word.avname}
+                        },
+                        fontWeight = FontWeight.Normal,
                         modifier = Modifier.weight(1f),
                         textAlign = TextAlign.End
                     )
                 }
-                Divider(
+                /*Divider(
                     color = MaterialTheme.colors.secondaryVariant,
                     modifier = Modifier
                         .height(1.dp)
@@ -92,13 +101,13 @@ fun WordCard(word: WordEntity, language: String) {
                 ) {
                     Text(
                         text = word.enname,
-                        fontWeight = if (language == stringResource(id = R.string.eng_lang)) FontWeight.Bold else FontWeight.Normal,
+                        fontWeight = if (languageFisrt == stringResource(id = R.string.eng_lang)) FontWeight.Bold else FontWeight.Normal,
                         textAlign = TextAlign.Start,
                         modifier = Modifier.weight(1f)
                     )
                     Text(
                         text = word.trname,
-                        fontWeight = if (language == stringResource(id = R.string.tr_lang)) FontWeight.Bold else FontWeight.Normal,
+                        fontWeight = if (languageFisrt == stringResource(id = R.string.tr_lang)) FontWeight.Bold else FontWeight.Normal,
                         modifier = Modifier.weight(1f),
                         textAlign = TextAlign.End
                     )
@@ -115,7 +124,7 @@ fun WordCard(word: WordEntity, language: String) {
                         maxLines = 4,
                         overflow = TextOverflow.Ellipsis,
                     )
-                }
+                }*/
             }
         }
     }

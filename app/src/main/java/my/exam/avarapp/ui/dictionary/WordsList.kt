@@ -69,7 +69,7 @@ fun WordsList(
         }.run { first + second }
     LazyColumn(Modifier.fillMaxSize()) {
         itemsIndexed(filteredList) { _, word ->
-            WordCard(word, languageFirst)
+            WordCard(word, languageFirst, languageSecond)
         }
     }
 }
