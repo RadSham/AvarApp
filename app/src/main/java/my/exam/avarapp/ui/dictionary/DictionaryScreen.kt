@@ -33,6 +33,6 @@ fun DictionaryScreen(
             selectedIndexFirst, selectedIndexSecond,languages
         )
         SearchView(query)
-        WordsList(query, wordsListState, languages[selectedIndexFirst.intValue])
+        WordsList(query, wordsListState, languages[selectedIndexFirst.intValue], languages[selectedIndexSecond.intValue])
     }
 }

@@ -13,12 +13,21 @@ import java.util.Locale
 fun WordsList(
     query: MutableState<String>,
     wordsListState: MutableState<List<WordEntity>>,
-    language: String,
+    languageFirst: String,
+    languageSecond: String,
 ) {
     query.value = query.value.replace("[1!|Ӏӏ]".toRegex(), "I")
     val filteredList =
-        wordsListState.value.filter {
-            when (language) {
+        wordsListState.value.sortedBy {
+            when (languageFirst) {
+                "Авар мацI" -> it.avname
+                "Русский язык" -> it.rusname
+                "English" -> it.enname
+                "Turkce" -> it.trname
+                else -> it.avname
+            }
+        }.filter {
+            when (languageFirst) {
                 "Авар мацI" ->
                     it.avderivatives.lowercase(Locale.getDefault())
                         .contains(query.value, ignoreCase = true)
@@ -38,7 +47,7 @@ fun WordsList(
                 }
             }
         }.partition {
-            when (language) {
+            when (languageFirst) {
                 "Авар мацI" ->
                     it.avname.lowercase(Locale.getDefault())
                         .startsWith(query.value, ignoreCase = true)
@@ -58,10 +67,9 @@ fun WordsList(
                 }
             }
         }.run { first + second }
-
     LazyColumn(Modifier.fillMaxSize()) {
         itemsIndexed(filteredList) { _, word ->
-            WordCard(word, language)
+            WordCard(word, languageFirst)
         }
     }
 }
