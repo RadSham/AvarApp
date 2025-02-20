@@ -30,6 +30,7 @@ fun LanguageChooser(
     val languagesStateListSecond = remember {
         languagesList.toMutableStateList()
     }
+    languagesStateListSecond.remove(selectedLanguageFirst.value)
 
     Row(Modifier.fillMaxWidth()) {
         val expanded = remember { mutableStateOf(false) }
@@ -64,6 +65,7 @@ fun LanguageChooser(
                 languagesList.forEachIndexed { index, s ->
                     DropdownMenuItem(onClick = {
                         selectedLanguageFirst.value = languagesList[index]
+                        //delete selectedLanguageFirst from second dropdown menu
                         languagesStateListSecond.clear()
                         languagesStateListSecond.addAll(languagesList)
                         languagesStateListSecond.remove(selectedLanguageFirst.value)
