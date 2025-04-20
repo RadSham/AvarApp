@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.gms)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 val keystorePropertiesFile = rootProject.file("/.gradle/keystore.properties")
@@ -110,4 +111,5 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     //Serialization
     implementation (libs.kotlinx.serialization.json)
+    implementation (libs.androidx.material.icons.extended)
 }

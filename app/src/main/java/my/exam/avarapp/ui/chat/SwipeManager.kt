@@ -1,6 +1,7 @@
 package my.exam.avarapp.ui.chat
 
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -98,6 +99,7 @@ fun DrawerMotionSwipe(
     val defaultActionSize = 40.dp
     val startActionSizePx = 0f
     val endActionSizePx = with(density) { defaultActionSize.toPx() * 2 }
+    val decayAnimationSpec = rememberSplineBasedDecay<Float>()
 
     val state = remember {
         AnchoredDraggableState(
@@ -106,9 +108,10 @@ fun DrawerMotionSwipe(
                 DragAnchors.Start at startActionSizePx
                 DragAnchors.End at endActionSizePx
             },
-            positionalThreshold = { distance: Float -> distance * 0.8f },
-            velocityThreshold = { with(density) { 100.dp.toPx() } },
-            animationSpec = tween()
+            snapAnimationSpec = tween(),
+            decayAnimationSpec = decayAnimationSpec,
+            positionalThreshold = { distance: Float -> distance * 0.9f },
+            velocityThreshold = { with(density) { 100.dp.toPx() } }
         )
     }
 
@@ -189,13 +192,14 @@ fun ReplyAction(
     updateRepliableMessageText: UpdateRepliableMessageText,
     showRepliableMessage: ShowRepliableMessage
 ) {
-    LaunchedEffect(state.currentValue) {
-        if (state.currentValue == DragAnchors.End) {
+    LaunchedEffect(state.settledValue) {
+        //https://android-review.googlesource.com/c/platform/frameworks/support/+/2930845
+        if (state.settledValue == DragAnchors.End) {
+            state.animateTo(DragAnchors.Start)
             updateRepliableMessageId.update(messageItem.sentOn.toString())
             updateRepliableMessageUsername.update(messageItem.userName)
             updateRepliableMessageText.update(messageItem.message)
             showRepliableMessage.show(true)
-            state.animateTo(DragAnchors.Start)
         }
     }
 }
