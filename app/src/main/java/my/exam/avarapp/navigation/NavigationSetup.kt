@@ -8,20 +8,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import my.exam.avarapp.ui.account.LoginScreen
-import my.exam.avarapp.ui.account.RegisterScreen
 import my.exam.avarapp.ShowToast
 import my.exam.avarapp.model.CategoryPhraseEntity
 import my.exam.avarapp.model.TutorialEntity
 import my.exam.avarapp.model.WordEntity
-import my.exam.avarapp.ui.account.AccountScreen
-import my.exam.avarapp.ui.account.AuthenticationOptionsScreen
-import my.exam.avarapp.ui.chat.ChatScreen
-import my.exam.avarapp.ui.tutorial.TutorialLessonScreen
-import my.exam.avarapp.ui.tutorial.TutorialScreen
 import my.exam.avarapp.ui.dictionary.DictionaryScreen
 import my.exam.avarapp.ui.info.InfoScreen
 import my.exam.avarapp.ui.phrasebook.PhrasebookScreen
+import my.exam.avarapp.ui.tutorial.TutorialLessonScreen
+import my.exam.avarapp.ui.tutorial.TutorialScreen
 
 @Composable
 fun NavigationSetup(
@@ -63,7 +58,8 @@ fun NavigationSetup(
                 navBackStackEntry.arguments?.getInt("index")
             )
         }
-        composable(NavScreen.Chat.route) {
+        //hide chat
+        /*composable(NavScreen.Chat.route) {
             ChatScreen(
                 authOptions = Action(navController).authOptions,
                 account = Action(navController).account,
@@ -99,6 +95,6 @@ fun NavigationSetup(
                 chat = Action(navController).chat,
                 back = Action(navController).navigateBack
             )
-        }
+        }*/
     }
 }

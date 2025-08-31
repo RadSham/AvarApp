@@ -27,14 +27,14 @@ android {
         }
     }
     namespace = "my.exam.avarapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "my.exam.avarapp"
         minSdk = 23
-        targetSdk = 34
-        versionCode = 12
-        versionName = "1.7.0"
+        targetSdk = 35
+        versionCode = 14
+        versionName = "1.8.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

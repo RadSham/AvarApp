@@ -5,12 +5,16 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -98,6 +102,8 @@ class DictionaryActivity : ComponentActivity() {
                 //Navigation and Screens
                 val navController = rememberNavController()
                 Scaffold(
+                    modifier = Modifier.navigationBarsPadding(),
+                    contentWindowInsets = WindowInsets.systemBars,
                     bottomBar = {
                         BottomNavigationBar(navController)
                     }) { padding ->

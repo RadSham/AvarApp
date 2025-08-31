@@ -18,7 +18,8 @@ fun BottomNavigationBar(navController: NavController) {
         NavScreen.Dictionary,
         NavScreen.Phrasebook,
         NavScreen.Tutorial,
-        NavScreen.Chat,
+        //hide chat
+//        NavScreen.Chat,
         NavScreen.Info
     )
 
