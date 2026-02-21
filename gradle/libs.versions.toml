@@ -1,6 +1,6 @@
 [versions]
 accompanistSystemuicontroller = "0.30.1"
-agp = "8.5.2"
+agp = "8.13.2"
 converterGson = "2.9.0"
 dagger = "2.51.1"
 daggerCompiler = "2.51.1"
